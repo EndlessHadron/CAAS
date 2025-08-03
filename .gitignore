@@ -1,0 +1,312 @@
+# Production .gitignore for CAAS Platform
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+*.env
+
+# Google Cloud & Firebase Credentials
+*.json
+*-key.json
+*-credentials.json
+service-account-*.json
+firebase-adminsdk-*.json
+google-cloud-key.json
+gcp-credentials.json
+
+# API Keys & Tokens
+anthropic_api_key.txt
+openai_api_key.txt
+sendgrid_api_key.txt
+twilio_auth_token.txt
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+backup_*.sql
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+.env/
+caas-venv/
+caas-env/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Node.js & NPM
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Next.js
+.next/
+out/
+build/
+
+# React
+build/
+dist/
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+.vs/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Docker
+Dockerfile.prod
+docker-compose.override.yml
+docker-compose.prod.yml
+.dockerignore.prod
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pino-*.log
+combined.log
+error.log
+access.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# SSL/TLS Certificates
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+certificates/
+ssl/
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+*.tmp
+*~
+.#*
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+.temp/
+
+# Archives
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Cloud Build & Deployment
+.gcloudignore
+cloudbuild.yaml.backup
+deployment.yaml.backup
+k8s-secrets.yaml
+terraform.tfstate*
+terraform.tfvars
+.terraform/
+
+# Monitoring & Analytics
+newrelic.ini
+datadog.yaml
+elastic-apm.yml
+
+# Load testing
+artillery_*.json
+k6_results_*.json
+
+# Local development
+local_settings.py
+dev_settings.py
+test_data/
+sample_data/
+mock_data/
+
+# Email templates (compiled)
+*.mjml.html
+
+# Miscellaneous
+.sass-cache/
+.connect.lock
+.nyc_output
+.grunt
+bower_components
+.lock-wscript
+.wafpickle-*
+.env.development
+.env.test
+.env.production
+
+# OS generated files
+Icon
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+
+# Application specific
+user_uploads/
+static_files/
+media_files/
+uploaded_documents/
+profile_pictures/
+temp_files/
+
+# Development tools
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+cython_debug/
+
+# Local configuration
+local.json
+local.yaml
+local.yml
+dev.json
+dev.yaml
+dev.yml
+
+# Production builds
+build_production/
+dist_production/
+
+# Sensitive data
+user_data_backup/
+database_dump/
+*.dump
+*.sql.gz
+
+# IDE specific files
+*.sublime-project
+*.sublime-workspace
+.fleet
+.history
