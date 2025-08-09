@@ -4,254 +4,345 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/lib/auth-context'
-import { useForm } from 'react-hook-form'
-import { SparklesIcon, UserGroupIcon, StarIcon } from '@heroicons/react/24/outline'
-
-interface RegisterForm {
-  email: string
-  password: string
-  confirmPassword: string
-  full_name: string
-  phone: string
-  role: 'client' | 'cleaner'
-}
+import { EyeIcon, EyeSlashIcon, UserGroupIcon, BriefcaseIcon, SparklesIcon } from '@heroicons/react/24/outline'
 
 export default function RegisterPage() {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    role: 'client'
+  })
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const { register: registerUser } = useAuth()
+  const { register } = useAuth()
   const router = useRouter()
-  
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<RegisterForm>({
-    defaultValues: {
-      role: 'client',
-    },
-  })
 
-  const password = watch('password')
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
 
-  const onSubmit = async (data: RegisterForm) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     setLoading(true)
     setError('')
 
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match')
+      setLoading(false)
+      return
+    }
+
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long')
+      setLoading(false)
+      return
+    }
+
     try {
-      await registerUser({
-        email: data.email,
-        password: data.password,
-        full_name: data.full_name,
-        phone: data.phone,
-        role: data.role,
+      await register({
+        email: formData.email,
+        password: formData.password,
+        role: formData.role as 'client' | 'cleaner',
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        phone: formData.phone || undefined
       })
+      
       router.push('/dashboard')
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Registration failed. Please try again.')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Registration failed')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="container-narrow">
-        <div className="card max-w-lg mx-auto animate-fade-in">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <SparklesIcon className="h-8 w-8 text-white" />
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
+      <div className="w-full max-w-lg">
+        {/* Premium glass card with texture matching login page */}
+        <div className="relative">
+          {/* Soft ambient glow */}
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500/10 to-accent-500/10 rounded-[2rem] blur-xl opacity-70"></div>
+          
+          {/* Main glass card with frosted texture */}
+          <div className="relative rounded-[2rem] overflow-hidden">
+            {/* Glass texture layers */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.18] via-white/[0.12] to-white/[0.08]"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/[0.06] via-white/[0.10] to-white/[0.15]"></div>
+            
+            {/* Noise texture for realistic glass */}
+            <div className="absolute inset-0 opacity-[0.015] mix-blend-screen">
+              <svg width="100%" height="100%">
+                <filter id="noiseFilter">
+                  <feTurbulence type="turbulence" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/>
+                </filter>
+                <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
+              </svg>
             </div>
-            <h2 className="text-3xl font-bold text-secondary-900 mb-2">
-              Join CAAS Today
-            </h2>
-            <p className="text-body">
-              Create your account and start your cleaning journey
-            </p>
-          </div>
-        
-          {/* Role Selection Cards */}
-          <div className="mb-8">
-            <p className="form-label text-center mb-4">I want to:</p>
-            <div className="grid grid-cols-2 gap-4">
-              <label className="cursor-pointer">
-                <input
-                  {...register('role', { required: 'Please select your role' })}
-                  type="radio"
-                  value="client"
-                  className="sr-only"
-                />
-                <div className={`card-compact text-center transition-all duration-200 ${
-                  watch('role') === 'client' 
-                    ? 'ring-2 ring-primary-300 bg-primary-50 border-primary-200' 
-                    : 'hover:border-secondary-300'
-                }`}>
-                  <UserGroupIcon className="h-8 w-8 text-primary-600 mx-auto mb-3" />
-                  <h3 className="font-medium text-secondary-900 mb-1">Book Services</h3>
-                  <p className="text-sm text-secondary-600">Find cleaning professionals</p>
+            
+            {/* Main content container */}
+            <div className="relative bg-white/[0.08] backdrop-blur-xl p-10 border border-white/30">
+              {/* Top edge highlight */}
+              <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent"></div>
+              
+              {/* Content */}
+              <div className="relative z-10">
+                {/* Header */}
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl mb-4 shadow-lg">
+                    <SparklesIcon className="h-7 w-7 text-white" />
+                  </div>
+                  <h1 className="text-3xl font-semibold text-secondary-900">Create your account</h1>
+                  <p className="text-secondary-600 mt-2 text-base">Join <span className="bg-gradient-to-r from-primary-600 via-primary-500 to-accent-500 bg-clip-text text-transparent font-medium">neatly</span> to start booking cleanings</p>
                 </div>
-              </label>
-              <label className="cursor-pointer">
-                <input
-                  {...register('role', { required: 'Please select your role' })}
-                  type="radio"
-                  value="cleaner"
-                  className="sr-only"
-                />
-                <div className={`card-compact text-center transition-all duration-200 ${
-                  watch('role') === 'cleaner' 
-                    ? 'ring-2 ring-primary-300 bg-primary-50 border-primary-200' 
-                    : 'hover:border-secondary-300'
-                }`}>
-                  <StarIcon className="h-8 w-8 text-accent-600 mx-auto mb-3" />
-                  <h3 className="font-medium text-secondary-900 mb-1">Provide Services</h3>
-                  <p className="text-sm text-secondary-600">Join as a cleaner</p>
-                </div>
-              </label>
-            </div>
-            {errors.role && (
-              <p className="form-error text-center mt-2">{errors.role.message}</p>
-            )}
-          </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            {error && (
-              <div className="bg-error-50 border border-error-200 text-error-600 px-4 py-3 rounded-xl">
-                {error}
+                {/* Error message */}
+                {error && (
+                  <div className="mb-6 p-3 bg-error-50/60 backdrop-blur-sm border border-error-200/50 rounded-xl">
+                    <p className="text-sm text-error-600 text-center">{error}</p>
+                  </div>
+                )}
+
+                {/* Form */}
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  {/* Role Selection */}
+                  <div>
+                    <label className="block text-base font-medium text-secondary-700 mb-2">
+                      I want to...
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setFormData({...formData, role: 'client'})}
+                        className={`p-4 rounded-xl border-2 transition-all backdrop-blur-sm min-h-[60px] sm:min-h-[80px] ${
+                          formData.role === 'client'
+                            ? 'border-primary-500/50 bg-primary-50/40'
+                            : 'border-secondary-200/30 hover:border-secondary-300/50 bg-white/10'
+                        }`}
+                      >
+                        <UserGroupIcon className={`h-6 w-6 mx-auto mb-2 ${
+                          formData.role === 'client' ? 'text-primary-600' : 'text-secondary-500'
+                        }`} />
+                        <div className={`text-base font-medium ${
+                          formData.role === 'client' ? 'text-primary-900' : 'text-secondary-700'
+                        }`}>Book Cleaning</div>
+                        <div className="text-sm text-secondary-500 mt-1">I need a cleaner</div>
+                      </button>
+                      
+                      <button
+                        type="button"
+                        onClick={() => setFormData({...formData, role: 'cleaner'})}
+                        className={`p-4 rounded-xl border-2 transition-all backdrop-blur-sm min-h-[60px] sm:min-h-[80px] ${
+                          formData.role === 'cleaner'
+                            ? 'border-primary-500/50 bg-primary-50/40'
+                            : 'border-secondary-200/30 hover:border-secondary-300/50 bg-white/10'
+                        }`}
+                      >
+                        <BriefcaseIcon className={`h-6 w-6 mx-auto mb-2 ${
+                          formData.role === 'cleaner' ? 'text-primary-600' : 'text-secondary-500'
+                        }`} />
+                        <div className={`text-base font-medium ${
+                          formData.role === 'cleaner' ? 'text-primary-900' : 'text-secondary-700'
+                        }`}>Offer Services</div>
+                        <div className="text-sm text-secondary-500 mt-1">I want to clean</div>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Name Fields */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-base font-medium text-secondary-700 mb-2">
+                        First name
+                      </label>
+                      <input
+                        name="firstName"
+                        type="text"
+                        required
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        className="form-input-glass"
+                        placeholder="John"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-base font-medium text-secondary-700 mb-2">
+                        Last name
+                      </label>
+                      <input
+                        name="lastName"
+                        type="text"
+                        required
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        className="form-input-glass"
+                        placeholder="Doe"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label className="block text-base font-medium text-secondary-700 mb-2">
+                      Email address
+                    </label>
+                    <input
+                      name="email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="form-input-glass"
+                      placeholder="you@example.com"
+                      autoComplete="email"
+                    />
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <label className="block text-base font-medium text-secondary-700 mb-2">
+                      Phone number <span className="text-secondary-400">(optional)</span>
+                    </label>
+                    <input
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="form-input-glass"
+                      placeholder="+44 20 1234 5678"
+                      autoComplete="tel"
+                    />
+                  </div>
+
+                  {/* Password Fields */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-base font-medium text-secondary-700 mb-2">
+                        Password
+                      </label>
+                      <div className="relative">
+                        <input
+                          name="password"
+                          type={showPassword ? 'text' : 'password'}
+                          required
+                          value={formData.password}
+                          onChange={handleChange}
+                          className="form-input-glass pr-10"
+                          placeholder="••••••"
+                          autoComplete="new-password"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-secondary-400 hover:text-secondary-600 transition-colors p-1"
+                        >
+                          {showPassword ? (
+                            <EyeSlashIcon className="h-4 w-4" />
+                          ) : (
+                            <EyeIcon className="h-4 w-4" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-base font-medium text-secondary-700 mb-2">
+                        Confirm
+                      </label>
+                      <div className="relative">
+                        <input
+                          name="confirmPassword"
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          required
+                          value={formData.confirmPassword}
+                          onChange={handleChange}
+                          className="form-input-glass pr-10"
+                          placeholder="••••••"
+                          autoComplete="new-password"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-secondary-400 hover:text-secondary-600 transition-colors p-1"
+                        >
+                          {showConfirmPassword ? (
+                            <EyeSlashIcon className="h-4 w-4" />
+                          ) : (
+                            <EyeIcon className="h-4 w-4" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Terms */}
+                  <div className="flex items-start">
+                    <input
+                      id="terms"
+                      name="terms"
+                      type="checkbox"
+                      required
+                      className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-white/20 rounded mt-0.5 bg-white/10"
+                    />
+                    <label htmlFor="terms" className="ml-2 block text-base text-secondary-600">
+                      I agree to the{' '}
+                      <Link href="/terms" className="text-primary-600 hover:text-primary-700 font-medium transition-colors">
+                        Terms and Conditions
+                      </Link>{' '}
+                      and{' '}
+                      <Link href="/privacy" className="text-primary-600 hover:text-primary-700 font-medium transition-colors">
+                        Privacy Policy
+                      </Link>
+                    </label>
+                  </div>
+
+                  {/* Submit button - exactly like landing page */}
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="btn-primary w-full"
+                  >
+                    {loading ? 'Creating account...' : (formData.role === 'client' ? 'Start booking' : 'Start earning')}
+                  </button>
+                </form>
+
+                {/* Divider */}
+                <div className="mt-6">
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-secondary-200/30"></div>
+                    </div>
+                    <div className="relative flex justify-center text-base">
+                      <span className="px-2 bg-white/[0.02] text-secondary-500">Already have an account?</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Login link - glass button style */}
+                <div className="mt-6">
+                  <Link 
+                    href="/auth/login" 
+                    className="w-full block text-center bg-white/[0.08] hover:bg-white/[0.12] text-secondary-700 font-normal py-3 px-6 rounded-lg transition-all duration-200 border border-white/30 hover:border-white/40 hover:scale-[1.02] active:scale-95"
+                  >
+                    Sign in instead
+                  </Link>
+                </div>
               </div>
-            )}
-
-            <div className="space-y-5">
-
-            <div>
-              <label htmlFor="full_name" className="form-label">
-                Full Name
-              </label>
-              <input
-                {...register('full_name', {
-                  required: 'Full name is required',
-                  minLength: {
-                    value: 2,
-                    message: 'Name must be at least 2 characters',
-                  },
-                })}
-                type="text"
-                className="form-input"
-                placeholder="Enter your full name"
-              />
-              {errors.full_name && (
-                <p className="mt-1 text-sm text-red-600">{errors.full_name.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="email" className="form-label">
-                Email address
-              </label>
-              <input
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^\S+@\S+$/i,
-                    message: 'Invalid email address',
-                  },
-                })}
-                type="email"
-                className="form-input"
-                placeholder="Enter your email"
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="phone" className="form-label">
-                Phone Number
-              </label>
-              <input
-                {...register('phone', {
-                  required: 'Phone number is required',
-                  pattern: {
-                    value: /^[\+]?[\d\s\-\(\)]+$/,
-                    message: 'Invalid phone number',
-                  },
-                })}
-                type="tel"
-                className="form-input"
-                placeholder="Enter your phone number"
-              />
-              {errors.phone && (
-                <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="password" className="form-label">
-                Password
-              </label>
-              <input
-                {...register('password', {
-                  required: 'Password is required',
-                  minLength: {
-                    value: 8,
-                    message: 'Password must be at least 8 characters',
-                  },
-                  pattern: {
-                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-                    message: 'Password must contain at least one uppercase letter, one lowercase letter, and one number',
-                  },
-                })}
-                type="password"
-                className="form-input"
-                placeholder="Create a password"
-              />
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="confirmPassword" className="form-label">
-                Confirm Password
-              </label>
-              <input
-                {...register('confirmPassword', {
-                  required: 'Please confirm your password',
-                  validate: (value) => value === password || 'Passwords do not match',
-                })}
-                type="password"
-                className="form-input"
-                placeholder="Confirm your password"
-              />
-              {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>
-              )}
+              
+              {/* Bottom edge highlight */}
+              <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
             </div>
           </div>
-
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Creating account...' : 'Create account'}
-            </button>
-          </div>
-
-          <div className="text-xs text-gray-500 text-center">
-            By creating an account, you agree to our{' '}
-            <Link href="/terms" className="text-primary-600 hover:text-primary-500">
-              Terms of Service
-            </Link>{' '}
-            and{' '}
-            <Link href="/privacy" className="text-primary-600 hover:text-primary-500">
-              Privacy Policy
-            </Link>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   )

@@ -1,41 +1,56 @@
-# 🧹 CAAS - Cleaning as a Service
+# 🧹 neatly - Premium Cleaning Services
 
 A comprehensive web platform connecting cleaning contractors with clients in London, UK. Built with modern technologies and deployed on Google Cloud Run.
 
+**🚀 Live Production URL: https://caas-backend-102964896009.europe-west2.run.app**
+
+## 📚 Documentation
+
+For engineers joining this project:
+
+- **🏗️ [Engineering Handover](./ENGINEERING_HANDOVER.md)** - Complete technical documentation, architecture, and troubleshooting
+- **⚡ [Project Context](./CLAUDE.md)** - Current system status, quick reference, and immediate priorities  
+- **🔧 [Deployment Runbook](./DEPLOYMENT_RUNBOOK.md)** - Operations procedures and incident response
+- **📋 This README** - Getting started and project overview
+
 ## 🎯 Overview
 
-CAAS is a full-stack SaaS platform that enables:
-- **Clients** to book professional cleaning services
-- **Cleaners** to find and manage cleaning jobs
-- **Admins** to oversee platform operations
+neatly is a full-stack SaaS platform that enables:
+- **Clients** to book professional cleaning services with personalized dashboards
+- **Cleaners** to find and manage cleaning jobs with professional profiles
+- **Role-based Access Control** with distinct user experiences
 
-### Key Features
+### ✨ Key Features
 
-- 🔐 **Authentication & Authorization** - JWT-based auth with role-based access
-- 📅 **Booking Management** - Complete booking lifecycle with real-time updates
-- 💳 **Payment Integration** - Secure payment processing (ready for Stripe)
+- 🔐 **Real JWT Authentication** - Production-ready auth with role-based access control
+- 👥 **Role-Based Profiles** - Separate client and cleaner experiences with specialized dashboards
+- 🏠 **Smart Booking System** - Location-based cleaner matching with preferences
+- 📊 **Professional Dashboards** - Earnings tracking, job management, and analytics
+- 💼 **Complete Job Lifecycle** - From booking → matching → acceptance → completion
 - 📱 **Responsive Design** - Mobile-first UI with Tailwind CSS
 - 🚀 **Cloud Native** - Deployed on Google Cloud Run with Firestore
-- 🤖 **AI Integration** - Ready for AI agent automation
-- 📊 **Analytics Dashboard** - Real-time stats and performance metrics
+- 🔄 **Unified API** - Single production URL with API proxy routing
 
-## 🏗️ Architecture
+## 🏗️ Production Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    CAAS Platform                            │
+│              CAAS Production Platform                       │
 ├─────────────────────────────────────────────────────────────┤
-│  Frontend (Next.js 14)     │  Backend (FastAPI)             │
-│  ├── React Components      │  ├── REST API                  │
-│  ├── TypeScript            │  ├── JWT Authentication        │
-│  ├── Tailwind CSS          │  ├── Pydantic Models           │
-│  └── React Query           │  └── Business Logic            │
+│  Single Production URL: caas-frontend-102964896009.europe-west2.run.app │
+├─────────────────────────────────────────────────────────────┤
+│  Frontend (Next.js 14)          │  Backend (FastAPI)        │
+│  ├── API Proxy (/api/* routes)  │  ├── Profile Management   │
+│  ├── Role-Based Dashboards      │  ├── JWT Authentication   │
+│  ├── Client Booking Flow        │  ├── Cleaner Matching     │
+│  ├── Cleaner Job Management     │  ├── Real-time Job Board  │
+│  └── Responsive UI Components   │  └── Firestore Integration│
 ├─────────────────────────────────────────────────────────────┤
 │                 Google Cloud Platform                       │
-│  ├── Cloud Run (Compute)                                   │
-│  ├── Firestore (Database)                                  │
-│  ├── Container Registry (Images)                           │
-│  └── Cloud Build (CI/CD)                                   │
+│  ├── Cloud Run (Unified Deployment)                        │
+│  ├── Firestore (User Profiles & Bookings)                 │
+│  ├── Container Registry (Docker Images)                    │
+│  └── Cloud Build (Automated CI/CD)                         │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -145,8 +160,13 @@ CAAS/
 ./start-backend.sh      # Start backend only
 ./start-frontend.sh     # Start frontend only
 
-# Deployment
-./deploy-to-gcr.sh      # Deploy to Google Cloud Run
+# Deployment (Production)
+./deploy-container.sh   # 🔥 RECOMMENDED: Container-based deployment
+./deploy-simple.sh      # Simple source deployment (legacy)
+./deploy-with-verification.sh  # With health checks (legacy)
+
+# Legacy deployment methods (not recommended for production)
+./deploy-to-gcr.sh      # Deploy to Google Cloud Run  
 ./deploy-to-gcr.sh backend    # Deploy backend only
 ./deploy-to-gcr.sh frontend   # Deploy frontend only
 
@@ -204,23 +224,27 @@ NEXT_PUBLIC_APP_NAME=CAAS - Cleaning as a Service
 - ✅ **CI/CD** - Cloud Build configurations
 - ✅ **Monitoring** - Health checks and logging
 
-## 📊 User Flows
+## 👥 User Experiences
 
-### Client Journey
-1. **Registration** → Email, name, phone, address
-2. **Browse Services** → Regular, deep, move-in/out cleaning
-3. **Book Service** → Date, time, location, requirements
-4. **Track Booking** → Status updates, cleaner assignment
-5. **Payment** → Secure payment processing
-6. **Rate & Review** → Service feedback
+### 🏠 Client Experience
+- **Personalized Dashboard** - Booking history, upcoming services, spending analytics
+- **Smart Booking Flow** - Pre-populated preferences, cleaner selection, location matching  
+- **Profile-Driven Service** - Property details, special requirements, access instructions
+- **Cleaner Selection** - Browse and choose from available cleaners with ratings and reviews
+- **Real-time Updates** - Booking status, cleaner assignment, completion notifications
 
-### Cleaner Journey
-1. **Registration** → Profile, availability, service areas
-2. **Browse Jobs** → Available bookings in their area
-3. **Accept Jobs** → Confirm availability and accept
-4. **Manage Schedule** → View upcoming assignments
-5. **Complete Jobs** → Mark as completed
-6. **Track Earnings** → Payment and statistics
+**Client Journey:**
+1. Register → Complete property profile → Book service → Select cleaner → Track progress → Rate experience
+
+### 🧽 Cleaner Experience  
+- **Professional Dashboard** - Available jobs, earnings tracking, completion statistics
+- **Business Profile Management** - Services offered, rates, availability, service radius
+- **Job Board** - Accept/reject jobs with full client details and requirements
+- **Earnings Analytics** - Weekly/monthly income, job completion rates, client ratings
+- **Professional Tools** - Pricing management, availability scheduling, skill cataloging
+
+**Cleaner Journey:**
+1. Register → Set up business profile → Configure availability → Browse jobs → Accept bookings → Complete work → Get paid
 
 ## 🔐 Security Features
 
@@ -270,48 +294,58 @@ npm run test
 
 ## 📝 API Endpoints
 
+All API endpoints are accessible through the unified production URL at `/api/*` routes.
+
 ### Authentication
-- `POST /api/v1/auth/register` - User registration
-- `POST /api/v1/auth/login` - User login
+- `POST /api/v1/auth/register` - User registration with role selection
+- `POST /api/v1/auth/login` - User login with JWT tokens
 - `POST /api/v1/auth/refresh` - Token refresh
-- `GET /api/v1/auth/me` - Current user info
+- `POST /api/v1/auth/logout` - User logout
+
+### Role-Based Profiles
+- `GET /api/v1/profiles/me` - Get current user profile with role-specific data
+- `PUT /api/v1/profiles/me/client` - Update client-specific profile
+- `PUT /api/v1/profiles/me/cleaner` - Update cleaner-specific profile
+- `GET /api/v1/profiles/client/{id}` - Get client public profile
+- `GET /api/v1/profiles/cleaner/{id}` - Get cleaner public profile
+- `GET /api/v1/profiles/cleaners/search` - Search cleaners by location/criteria
 
 ### Bookings
-- `POST /api/v1/bookings` - Create booking
+- `POST /api/v1/bookings` - Create booking with optional cleaner selection
 - `GET /api/v1/bookings` - List user bookings
 - `GET /api/v1/bookings/{id}` - Get booking details
 - `POST /api/v1/bookings/{id}/cancel` - Cancel booking
 - `POST /api/v1/bookings/{id}/rate` - Rate completed booking
 
-### Users
-- `GET /api/v1/users/profile` - Get user profile
-- `PUT /api/v1/users/profile` - Update user profile
-
-### Contractors (Cleaners)
-- `GET /api/v1/contractors/jobs` - Available jobs
+### Job Management (Cleaners)
+- `GET /api/v1/contractors/jobs` - Available jobs for cleaners
 - `POST /api/v1/contractors/jobs/{id}/accept` - Accept job
 - `POST /api/v1/contractors/jobs/{id}/complete` - Complete job
-- `GET /api/v1/contractors/earnings` - Earnings summary
+- `GET /api/v1/contractors/earnings` - Earnings summary and analytics
 
-## 🎯 Roadmap
+## 🎯 Current Status & Roadmap
 
-### Phase 1 (Current)
-- ✅ Core platform functionality
-- ✅ User authentication and management
-- ✅ Booking system
-- ✅ Basic payment integration
+### ✅ Phase 1 - Complete (Production Ready)
+- ✅ **Role-Based Authentication System** - JWT with client/cleaner/admin roles
+- ✅ **Comprehensive Profile Management** - Separate client and cleaner profiles
+- ✅ **Client Dashboard & Booking System** - Full booking lifecycle with cleaner selection
+- ✅ **Cleaner Dashboard & Job Management** - Professional job board and earnings tracking
+- ✅ **Location-Based Matching** - Search cleaners by location and service type
+- ✅ **Unified Production Deployment** - Single URL with API proxy routing
+- ✅ **Real Database Integration** - Firestore with proper data modeling
+- ✅ **Production Security** - HTTPS, CORS, input validation, error handling
 
-### Phase 2 (Next)
-- 🔄 Mobile app development
-- 🔄 Advanced search and filtering
-- 🔄 Real-time notifications
-- 🔄 AI-powered matching
+### 🔄 Phase 2 - Next Enhancements
+- 🔄 **Payment Integration** - Stripe checkout and earnings distribution
+- 🔄 **Real-time Notifications** - Job updates, booking confirmations
+- 🔄 **Mobile App Development** - React Native or PWA
+- 🔄 **Advanced Analytics** - Business intelligence dashboard
 
-### Phase 3 (Future)
-- 📅 Multi-city expansion
-- 📅 Advanced analytics
-- 📅 Integration with external services
-- 📅 White-label solutions
+### 📅 Phase 3 - Future Expansion
+- 📅 **Multi-city Support** - Expand beyond London
+- 📅 **AI-Powered Matching** - Intelligent cleaner-client pairing
+- 📅 **Integration APIs** - Calendar sync, external booking systems
+- 📅 **White-label Solutions** - Platform-as-a-Service for other markets
 
 ## 📞 Support
 
@@ -327,3 +361,32 @@ This project is proprietary software. All rights reserved.
 ---
 
 **Built with ❤️ for the cleaning services industry in London, UK**
+
+## 🔑 Test Credentials
+
+For testing the platform, use these pre-created accounts:
+
+### Admin User (Full Platform Access)
+- **Email**: `admin@neatly.com`
+- **Password**: `NeatlyAdmin123!`
+- **Dashboard**: [/admin](https://caas-frontend-102964896009.europe-west2.run.app/admin)
+- **Permissions**: User management, platform analytics, system configuration
+
+### Client User (Customer Account)
+- **Email**: `client@neatly.com`
+
+
+
+- **Password**: `Client123!`
+- **Dashboard**: [/client](https://caas-frontend-102964896009.europe-west2.run.app/client)
+- **Features**: Book services, manage profile, view bookings, select cleaners
+
+### Cleaner User (Service Provider)
+- **Email**: `cleaner@neatly.com`
+- **Password**: `Cleaner123!`
+- **Dashboard**: [/cleaner](https://caas-frontend-102964896009.europe-west2.run.app/cleaner)
+- **Features**: Accept jobs, manage availability, track earnings
+
+**Login URL**: https://caas-frontend-102964896009.europe-west2.run.app/auth/login
+
+> ⚠️ **Note**: These are test accounts for development and demonstration purposes. Do not use these credentials patterns in production environments.

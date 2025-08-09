@@ -4,11 +4,11 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build',
+      '--build-arg', 'NEXT_PUBLIC_API_URL=https://caas-backend-102964896009.europe-west2.run.app',
       '-t', 'gcr.io/$PROJECT_ID/caas-frontend:$COMMIT_SHA',
       '-t', 'gcr.io/$PROJECT_ID/caas-frontend:latest',
       '.'
     ]
-    dir: 'caas-frontend'
 
   # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'

@@ -8,18 +8,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Clean, fresh color palette
+        // Modern, cool color palette
         primary: {
-          50: '#f0fdf9',   // Very light mint
-          100: '#ccfdf7',  // Light mint
-          200: '#99f6e4',  // Soft mint
-          300: '#5eead4',  // Medium mint
-          400: '#2dd4bf',  // Bright teal
-          500: '#14b8a6',  // Main teal
-          600: '#0d9488',  // Deep teal
-          700: '#0f766e',  // Darker teal
-          800: '#115e59',  // Very dark teal
-          900: '#134e4a',  // Deepest teal
+          50: '#eff6ff',   // Very light blue
+          100: '#dbeafe',  // Light blue
+          200: '#bfdbfe',  // Soft blue
+          300: '#93c5fd',  // Medium blue
+          400: '#60a5fa',  // Bright blue
+          500: '#3b82f6',  // Main blue
+          600: '#2563eb',  // Deep blue
+          700: '#1d4ed8',  // Darker blue
+          800: '#1e40af',  // Very dark blue
+          900: '#1e3a8a',  // Deepest blue
         },
         secondary: {
           50: '#f8fafc',   // Pure light
@@ -34,21 +34,21 @@ module.exports = {
           900: '#0f172a',  // Deepest gray
         },
         accent: {
-          50: '#fff7ed',   // Warm light
-          100: '#ffedd5',  // Light peach
-          200: '#fed7aa',  // Soft peach
-          300: '#fdba74',  // Medium peach
-          400: '#fb923c',  // Bright orange
-          500: '#f97316',  // Main orange
-          600: '#ea580c',  // Deep orange
-          700: '#c2410c',  // Darker orange
-          800: '#9a3412',  // Very dark orange
-          900: '#7c2d12',  // Deepest orange
+          50: '#ecfeff',   // Very light cyan
+          100: '#cffafe',  // Light cyan
+          200: '#a5f3fc',  // Soft cyan
+          300: '#67e8f9',  // Medium cyan
+          400: '#22d3ee',  // Bright cyan
+          500: '#06b6d4',  // Main cyan
+          600: '#0891b2',  // Deep cyan
+          700: '#0e7490',  // Darker cyan
+          800: '#155e75',  // Very dark cyan
+          900: '#164e63',  // Deepest cyan
         },
         success: {
           50: '#f0fdf4',
-          500: '#22c55e',
-          600: '#16a34a',
+          500: '#10b981',
+          600: '#059669',
         },
         warning: {
           50: '#fffbeb',
@@ -69,6 +69,9 @@ module.exports = {
         'slide-up': 'slideUp 0.3s ease-out',
         'bounce-gentle': 'bounceGentle 2s infinite',
         'pulse-soft': 'pulseSoft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'float': 'float 3s ease-in-out infinite',
+        'glow': 'glow 2s ease-in-out infinite alternate',
+        'shimmer': 'shimmer 2s infinite',
       },
       keyframes: {
         fadeIn: {
@@ -86,6 +89,17 @@ module.exports = {
         pulseSoft: {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.8' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        glow: {
+          '0%': { boxShadow: '0 0 5px rgba(59, 130, 246, 0.2)' },
+          '100%': { boxShadow: '0 0 20px rgba(59, 130, 246, 0.4)' },
+        },
+        shimmer: {
+          '100%': { transform: 'translateX(100%) skewX(-12deg)' },
         },
       },
       boxShadow: {

@@ -45,17 +45,24 @@ class RefreshTokenRequest(BaseModel):
 
 @router.post("/register", response_model=TokenResponse)
 async def register(user_data: UserRegister):
-    """Register a new user"""
+    """Register a new user with real JWT tokens"""
     try:
         # Validate role
         if user_data.role not in ["client", "cleaner", "admin"]:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid role specified"
+                detail="Invalid role specified. Must be: client, cleaner, or admin"
+            )
+        
+        # Validate password strength
+        if len(user_data.password) < 6:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Password must be at least 6 characters long"
             )
         
         # Check if user already exists
-        if await user_service.check_user_exists(user_data.email):
+        if user_service.check_user_exists(user_data.email):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="User with this email already exists"
@@ -71,7 +78,7 @@ async def register(user_data: UserRegister):
             phone=user_data.phone
         )
         
-        user_id = await user_service.create_user(user_create)
+        user_id = user_service.create_user(user_create)
         
         if not user_id:
             raise HTTPException(
@@ -80,24 +87,26 @@ async def register(user_data: UserRegister):
             )
         
         # Get the created user
-        user = await user_service.get_user_by_id(user_id)
+        user = user_service.get_user_by_id(user_id)
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Failed to retrieve created user"
             )
         
-        # Create tokens
+        # Create real JWT tokens
         access_token = create_access_token({"sub": user_id, "role": user_data.role})
         refresh_token = create_refresh_token({"sub": user_id, "role": user_data.role})
         
-        # Format user response
-        user_response = user_service.format_user_response(user)
+        # Format user response as dict
+        user_response = user_service.format_user_response(user).dict()
+        
+        logger.info(f"User registered successfully: {user_data.email}")
         
         return TokenResponse(
             access_token=access_token,
             refresh_token=refresh_token,
-            user=user_response.dict()
+            user=user_response
         )
         
     except HTTPException:
@@ -112,10 +121,10 @@ async def register(user_data: UserRegister):
 
 @router.post("/login", response_model=TokenResponse)
 async def login(user_credentials: UserLogin):
-    """Login user"""
+    """Login user with real JWT tokens"""
     try:
         # Authenticate user
-        user = await user_service.authenticate_user(
+        user = user_service.authenticate_user(
             user_credentials.email, 
             user_credentials.password
         )
@@ -126,17 +135,19 @@ async def login(user_credentials: UserLogin):
                 detail="Invalid email or password"
             )
         
-        # Create tokens
+        # Create real JWT tokens
         access_token = create_access_token({"sub": user['uid'], "role": user['role']})
         refresh_token = create_refresh_token({"sub": user['uid'], "role": user['role']})
         
-        # Format user response
-        user_response = user_service.format_user_response(user)
+        # Format user response as dict
+        user_response = user_service.format_user_response(user).dict()
+        
+        logger.info(f"User logged in successfully: {user_credentials.email}")
         
         return TokenResponse(
             access_token=access_token,
             refresh_token=refresh_token,
-            user=user_response.dict()
+            user=user_response
         )
         
     except HTTPException:
@@ -151,13 +162,29 @@ async def login(user_credentials: UserLogin):
 
 @router.post("/refresh", response_model=dict)
 async def refresh_token(token_request: RefreshTokenRequest):
-    """Refresh access token"""
+    """Refresh access token using refresh token"""
     try:
         payload = verify_token(token_request.refresh_token, "refresh")
         user_id = payload.get("sub")
         user_role = payload.get("role")
         
+        if not user_id or not user_role:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid refresh token payload"
+            )
+        
+        # Verify user still exists
+        user = user_service.get_user_by_id(user_id)
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User no longer exists"
+            )
+        
         new_access_token = create_access_token({"sub": user_id, "role": user_role})
+        
+        logger.info(f"Token refreshed for user: {user_id}")
         
         return {
             "access_token": new_access_token,
@@ -176,3 +203,21 @@ async def refresh_token(token_request: RefreshTokenRequest):
 async def logout():
     """Logout user (client-side token removal)"""
     return {"message": "Successfully logged out"}
+
+
+@router.get("/stats")
+async def get_auth_stats():
+    """Get authentication system statistics"""
+    try:
+        stats = user_service.get_user_statistics()
+        return {
+            "status": "operational",
+            "database": "firestore",
+            "users": stats
+        }
+    except Exception as e:
+        logger.error(f"Failed to get auth stats: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to retrieve statistics"
+        )

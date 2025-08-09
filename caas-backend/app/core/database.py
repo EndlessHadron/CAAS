@@ -11,6 +11,17 @@ logger = logging.getLogger(__name__)
 _firestore_client: Optional[firestore.Client] = None
 
 
+def init_memory_db():
+    """Initialize memory database for MVP"""
+    try:
+        from app.core.memory_db import memory_db
+        memory_db.init()
+        logger.info("Memory database initialized successfully")
+    except Exception as e:
+        logger.error(f"Failed to initialize memory database: {e}")
+        raise
+
+
 def init_firestore() -> firestore.Client:
     """Initialize Firestore client"""
     global _firestore_client
@@ -56,4 +67,6 @@ class FirestoreCollections:
     CLEANER_AVAILABILITY = get_collection_name("cleaner_availability")
     NOTIFICATIONS = get_collection_name("notifications")
     AI_DECISIONS = get_collection_name("ai_decisions")
-    AUDIT_LOG = get_collection_name("audit_log")
+    AUDIT_LOG = get_collection_name("audit_logs")
+    PLATFORM_SETTINGS = get_collection_name("platform_settings")
+    ADMIN_SESSIONS = get_collection_name("admin_sessions")

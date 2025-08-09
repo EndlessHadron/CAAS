@@ -34,7 +34,7 @@ class BaseRepository(ABC, Generic[T]):
             self._collection = self.client.collection(self.collection_name)
         return self._collection
     
-    async def create(self, document_id: str, data: Dict[str, Any]) -> bool:
+    def create(self, document_id: str, data: Dict[str, Any]) -> bool:
         """Create a new document"""
         try:
             # Add timestamps
@@ -52,7 +52,7 @@ class BaseRepository(ABC, Generic[T]):
             logger.error(f"Failed to create document {document_id}: {e}")
             return False
     
-    async def get_by_id(self, document_id: str) -> Optional[Dict[str, Any]]:
+    def get_by_id(self, document_id: str) -> Optional[Dict[str, Any]]:
         """Get document by ID"""
         try:
             doc_ref = self.collection.document(document_id)
@@ -69,7 +69,7 @@ class BaseRepository(ABC, Generic[T]):
             logger.error(f"Failed to get document {document_id}: {e}")
             return None
     
-    async def update(self, document_id: str, data: Dict[str, Any]) -> bool:
+    def update(self, document_id: str, data: Dict[str, Any]) -> bool:
         """Update an existing document"""
         try:
             # Add update timestamp
@@ -85,7 +85,7 @@ class BaseRepository(ABC, Generic[T]):
             logger.error(f"Failed to update document {document_id}: {e}")
             return False
     
-    async def delete(self, document_id: str) -> bool:
+    def delete(self, document_id: str) -> bool:
         """Delete a document"""
         try:
             doc_ref = self.collection.document(document_id)
@@ -98,7 +98,7 @@ class BaseRepository(ABC, Generic[T]):
             logger.error(f"Failed to delete document {document_id}: {e}")
             return False
     
-    async def get_by_field(self, field: str, value: Any) -> Optional[Dict[str, Any]]:
+    def get_by_field(self, field: str, value: Any) -> Optional[Dict[str, Any]]:
         """Get first document where field equals value"""
         try:
             query = self.collection.where(field, '==', value).limit(1)
@@ -115,7 +115,7 @@ class BaseRepository(ABC, Generic[T]):
             logger.error(f"Failed to query by {field}={value}: {e}")
             return None
     
-    async def get_many_by_field(self, field: str, value: Any, limit: Optional[int] = None) -> List[Dict[str, Any]]:
+    def get_many_by_field(self, field: str, value: Any, limit: Optional[int] = None) -> List[Dict[str, Any]]:
         """Get multiple documents where field equals value"""
         try:
             query = self.collection.where(field, '==', value)
@@ -137,7 +137,7 @@ class BaseRepository(ABC, Generic[T]):
             logger.error(f"Failed to query multiple by {field}={value}: {e}")
             return []
     
-    async def get_all(self, limit: Optional[int] = None) -> List[Dict[str, Any]]:
+    def get_all(self, limit: Optional[int] = None) -> List[Dict[str, Any]]:
         """Get all documents in collection"""
         try:
             query = self.collection
@@ -159,7 +159,7 @@ class BaseRepository(ABC, Generic[T]):
             logger.error(f"Failed to get all documents: {e}")
             return []
     
-    async def exists(self, document_id: str) -> bool:
+    def exists(self, document_id: str) -> bool:
         """Check if document exists"""
         try:
             doc_ref = self.collection.document(document_id)
@@ -170,7 +170,7 @@ class BaseRepository(ABC, Generic[T]):
             logger.error(f"Failed to check existence of {document_id}: {e}")
             return False
     
-    async def count(self) -> int:
+    def count(self) -> int:
         """Count documents in collection"""
         try:
             docs = self.collection.stream()

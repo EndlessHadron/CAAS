@@ -1,0 +1,174 @@
+name: Production Health Check
+
+on:
+  schedule:
+    # Run every 10 minutes
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    # Allow manual trigger
+  push:
+    branches: [main]
+    # Run after deployments
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install requests
+
+    - name: Run Authentication Health Check
+      id: auth-check
+      run: |
+        python3 - << 'EOF'
+        import requests
+        import sys
+        import time
+        import json
+        
+        BASE_URL = "https://caas-backend-102964896009.europe-west2.run.app"
+        
+        def test_health_endpoint():
+            response = requests.get(f"{BASE_URL}/health", timeout=10)
+            return response.status_code == 200
+        
+        def test_system_status():
+            response = requests.get(f"{BASE_URL}/api/v1/system/info", timeout=10)
+            if response.status_code != 200:
+                return False, f"System endpoint failed: {response.status_code}"
+            
+            data = response.json()
+            if data.get('auth_status') != 'operational':
+                return False, f"Auth status degraded: {data.get('auth_status')}"
+            
+            return True, "System status healthy"
+        
+        def test_auth_components():
+            response = requests.get(f"{BASE_URL}/api/v1/system/auth-test", timeout=15)
+            if response.status_code != 200:
+                return False, f"Auth test endpoint failed: {response.status_code}"
+            
+            data = response.json()
+            if data.get('overall_status') != 'healthy':
+                return False, f"Auth components unhealthy: {data}"
+            
+            return True, "Auth components healthy"
+        
+        def test_authentication_flow():
+            # Test registration and login
+            test_email = f"ci-test-{int(time.time())}@healthcheck.com"
+            
+            # Registration
+            reg_payload = {
+                "email": test_email,
+                "password": "CITest123!",
+                "first_name": "CI",
+                "last_name": "Test",
+                "role": "client"
+            }
+            
+            reg_response = requests.post(f"{BASE_URL}/api/v1/auth/register", json=reg_payload, timeout=10)
+            if reg_response.status_code != 200:
+                return False, f"Registration failed: {reg_response.status_code}"
+            
+            # Login
+            login_payload = {
+                "email": test_email,
+                "password": "CITest123!"
+            }
+            
+            login_response = requests.post(f"{BASE_URL}/api/v1/auth/login", json=login_payload, timeout=10)
+            if login_response.status_code != 200:
+                return False, f"Login failed: {login_response.status_code} - {login_response.text}"
+            
+            return True, "Authentication flow successful"
+        
+        # Run all tests
+        tests = [
+            ("Health Endpoint", test_health_endpoint),
+            ("System Status", test_system_status),
+            ("Auth Components", test_auth_components),
+            ("Authentication Flow", test_authentication_flow)
+        ]
+        
+        results = []
+        all_passed = True
+        
+        for test_name, test_func in tests:
+            try:
+                if test_name in ["System Status", "Auth Components"]:
+                    success, message = test_func()
+                else:
+                    success = test_func()
+                    message = "Passed" if success else "Failed"
+                
+                results.append(f"✅ {test_name}: {message}" if success else f"❌ {test_name}: {message}")
+                if not success:
+                    all_passed = False
+                    
+            except Exception as e:
+                results.append(f"❌ {test_name}: Exception - {str(e)}")
+                all_passed = False
+        
+        # Output results
+        print("Production Health Check Results:")
+        print("=" * 50)
+        for result in results:
+            print(result)
+        print("=" * 50)
+        
+        if all_passed:
+            print("🎉 All health checks passed!")
+            sys.exit(0)
+        else:
+            print("🚨 Health check failures detected!")
+            sys.exit(1)
+        EOF
+
+    - name: Create Issue on Failure
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const issue = await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '🚨 Production Health Check Failed',
+            body: `Production health check failed at ${new Date().toISOString()}
+            
+            **Workflow:** ${context.workflow}
+            **Run ID:** ${context.runId}
+            **Run URL:** ${context.payload.repository.html_url}/actions/runs/${context.runId}
+            
+            ## Next Steps
+            1. Check the workflow logs for specific failure details
+            2. Verify production service status manually
+            3. Follow the deployment runbook if authentication issues detected
+            4. Consider rolling back if recent deployment caused the issue
+            
+            ## Quick Links
+            - [Production Service](https://caas-backend-102964896009.europe-west2.run.app/health)
+            - [System Status](https://caas-backend-102964896009.europe-west2.run.app/api/v1/system/info)
+            - [Deployment Runbook](DEPLOYMENT_RUNBOOK.md)
+            `,
+            labels: ['bug', 'production', 'urgent']
+          });
+          
+          console.log(`Created issue #${issue.data.number}`);
+
+    - name: Notify Success
+      if: success()
+      run: |
+        echo "✅ Production health check passed at $(date)"

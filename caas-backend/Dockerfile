@@ -1,13 +1,14 @@
-# Use Python 3.11 slim image
+# Production Dockerfile for CAAS Backend
 FROM python:3.11-slim
 
-# Set working directory
 WORKDIR /app
 
-# Set environment variables
+# Set production environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/app
+ENV API_DEBUG=false
+ENV API_RELOAD=false
 
 # Install system dependencies
 RUN apt-get update \
@@ -15,7 +16,7 @@ RUN apt-get update \
         gcc \
         g++ \
         curl \
-        && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt .
@@ -35,5 +36,5 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:8000/health || exit 1
 
-# Run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the production application with real authentication
+CMD ["python", "-m", "uvicorn", "app.main_production_real:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
