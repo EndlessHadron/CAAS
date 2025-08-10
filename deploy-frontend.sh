@@ -6,9 +6,9 @@
 set -e
 
 PROJECT_ID="caas-467918"
-REGION="europe-west2"
+REGION="us-central1"
 SERVICE_NAME="caas-frontend"
-PRODUCTION_URL="https://caas-frontend-102964896009.europe-west2.run.app"
+PRODUCTION_URL="https://caas-frontend-102964896009.us-central1.run.app"
 
 echo "🚀 neatly Frontend Deployment"
 echo "   Project: $PROJECT_ID"

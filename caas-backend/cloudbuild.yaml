@@ -4,14 +4,15 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build',
-      '-t', 'gcr.io/$PROJECT_ID/caas-backend:$COMMIT_SHA',
+      '-f', 'Dockerfile.production',
+      '-t', 'gcr.io/$PROJECT_ID/caas-backend:$BUILD_ID',
       '-t', 'gcr.io/$PROJECT_ID/caas-backend:latest',
       '.'
     ]
 
   # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/caas-backend:$COMMIT_SHA']
+    args: ['push', 'gcr.io/$PROJECT_ID/caas-backend:$BUILD_ID']
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/caas-backend:latest']
@@ -21,8 +22,8 @@ steps:
     entrypoint: gcloud
     args: [
       'run', 'deploy', 'caas-backend',
-      '--image', 'gcr.io/$PROJECT_ID/caas-backend:$COMMIT_SHA',
-      '--region', 'europe-west2',
+      '--image', 'gcr.io/$PROJECT_ID/caas-backend:$BUILD_ID',
+      '--region', 'us-central1',
       '--platform', 'managed',
       '--allow-unauthenticated',
       '--port', '8000',
@@ -34,7 +35,7 @@ steps:
 
 # Store images in Google Container Registry
 images:
-  - 'gcr.io/$PROJECT_ID/caas-backend:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/caas-backend:$BUILD_ID'
   - 'gcr.io/$PROJECT_ID/caas-backend:latest'
 
 # Build options

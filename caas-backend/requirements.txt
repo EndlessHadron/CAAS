@@ -15,5 +15,7 @@ google-auth==2.23.4
 firebase-admin==6.2.0
 httpx==0.25.2
 google-cloud-secret-manager==2.18.2
+google-cloud-kms==3.5.1
 slowapi==0.1.9
 redis==5.0.1
+stripe==7.6.0

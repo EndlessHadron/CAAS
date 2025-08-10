@@ -18,7 +18,8 @@ class Settings(BaseSettings):
     api_reload: bool = True
     
     # Security - Production settings
-    secret_key: str = "your-secret-key-change-in-production"  # Fallback only
+    # CRITICAL: Never hardcode secrets. These will be loaded from secure storage
+    secret_key: str = ""  # Loaded from Firestore or Secret Manager at runtime
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30  # Reasonable for admin work
     refresh_token_expire_days: int = 7

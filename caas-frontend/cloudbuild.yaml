@@ -4,7 +4,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build',
-      '--build-arg', 'NEXT_PUBLIC_API_URL=https://caas-backend-102964896009.europe-west2.run.app',
+      '--build-arg', 'NEXT_PUBLIC_API_URL=https://caas-backend-102964896009.us-central1.run.app',
       '-t', 'gcr.io/$PROJECT_ID/caas-frontend:$COMMIT_SHA',
       '-t', 'gcr.io/$PROJECT_ID/caas-frontend:latest',
       '.'
@@ -23,7 +23,7 @@ steps:
     args: [
       'run', 'deploy', 'caas-frontend',
       '--image', 'gcr.io/$PROJECT_ID/caas-frontend:$COMMIT_SHA',
-      '--region', 'europe-west2',
+      '--region', 'us-central1',
       '--platform', 'managed',
       '--allow-unauthenticated',
       '--memory', '512Mi',
@@ -31,7 +31,7 @@ steps:
       '--min-instances', '0',
       '--max-instances', '10',
       '--port', '3000',
-      '--set-env-vars', 'NEXT_PUBLIC_API_URL=https://caas-backend-[hash]-ew.a.run.app'
+      '--set-env-vars', 'NEXT_PUBLIC_API_URL=https://caas-backend-102964896009.us-central1.run.app'
     ]
 
 # Store images in Google Container Registry

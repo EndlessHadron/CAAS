@@ -164,6 +164,54 @@ async def get_user_bookings(current_user_id: str = Depends(get_current_user_id))
         logger.error(f"Failed to get bookings for user {current_user_id}: {e}")
         return []
 
+@router.get("/{booking_id}")
+async def get_booking(booking_id: str, current_user_id: str = Depends(get_current_user_id)):
+    """Get a specific booking by ID"""
+    try:
+        from app.core.database import get_firestore_client
+        import logging
+        logger = logging.getLogger(__name__)
+        
+        logger.info(f"Getting booking {booking_id} for user {current_user_id}")
+        
+        db = get_firestore_client()
+        
+        # Find the booking by booking_id and verify ownership
+        bookings_ref = db.collection(FirestoreCollections.BOOKINGS)
+        query = bookings_ref.where('booking_id', '==', booking_id).where('client_id', '==', current_user_id)
+        docs = list(query.stream())
+        
+        if not docs:
+            logger.warning(f"Booking {booking_id} not found for user {current_user_id}")
+            raise HTTPException(status_code=404, detail="Booking not found")
+        
+        booking_data = docs[0].to_dict()
+        
+        # Format booking for response - use the actual structure from the database
+        return {
+            "booking_id": booking_data.get("booking_id"),
+            "status": booking_data.get("status"),
+            "service": booking_data.get("service", {
+                "type": "regular",
+                "duration": 2,
+                "price": 50.0
+            }),
+            "date": booking_data.get("schedule", {}).get("date", booking_data.get("date")),
+            "time": booking_data.get("schedule", {}).get("time", booking_data.get("time")),
+            "location": booking_data.get("location", {
+                "address": booking_data.get("address", {})
+            }),
+            "cleaner_id": booking_data.get("cleaner_id"),
+            "payment": booking_data.get("payment", {}),
+            "created_at": booking_data.get("created_at")
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to get booking: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get booking")
+
 @router.post("/{booking_id}/cancel")
 async def cancel_booking(
     booking_id: str,

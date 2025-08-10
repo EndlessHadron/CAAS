@@ -1,5 +1,10 @@
 # CAAS Engineering Handover - Complete System Documentation
 
+## Critical Documentation Files
+- **[SECURITY_ARCHITECTURE.md](./SECURITY_ARCHITECTURE.md)** - Complete security implementation details, Cloud KMS setup, Secret Manager configuration
+- **[DEPLOYMENT_RUNBOOK.md](./DEPLOYMENT_RUNBOOK.md)** - Step-by-step deployment procedures and emergency protocols
+- **[CLAUDE.md](./CLAUDE.md)** - Quick reference for current system status and priorities
+
 ## Table of Contents
 1. [Project Overview](#project-overview)
 2. [Architecture Overview](#architecture-overview)
@@ -21,7 +26,7 @@
 **CAAS (Cleaning as a Service)** is a production-ready SaaS platform connecting clients with cleaning contractors in London, UK.
 
 ### Key Metrics
-- **Production URL**: https://caas-backend-102964896009.europe-west2.run.app
+- **Production URL**: https://caas-backend-102964896009.us-central1.run.app
 - **Status**: Live in production with active users
 - **Architecture**: Serverless microservices on Google Cloud Platform
 - **Database**: Google Firestore (NoSQL)
@@ -82,7 +87,10 @@ caas/
 ├── deploy-with-verification.sh      # Production deployment script
 ├── ENGINEERING_HANDOVER.md         # This file
 ├── DEPLOYMENT_RUNBOOK.md           # Operations guide
+├── SECURITY_ARCHITECTURE.md        # Security implementation details
 ├── CLAUDE.md                       # Project context
+├── setup_enterprise_security.sh    # Cloud KMS & IAM setup script
+├── migrate_jwt_to_secret_manager.py # JWT secret migration tool
 ├── monitoring/
 │   └── auth-health-monitor.py      # Continuous health monitoring
 ├── .github/workflows/
@@ -95,6 +103,9 @@ caas/
 │       ├── config.py               # Environment configuration
 │       ├── api/v1/                 # API endpoints
 │       ├── core/                   # Security, database
+│       │   ├── kms_jwt.py         # Cloud KMS JWT signing
+│       │   ├── secure_secrets.py  # Centralized secret management
+│       │   └── security.py        # Standard JWT operations
 │       ├── models/                 # Data models
 │       ├── services/               # Business logic
 │       └── repositories/           # Data access layer
@@ -109,10 +120,16 @@ caas/
 
 ## Authentication System
 
-### JWT Token Architecture
+### JWT Token Architecture (Enhanced with Cloud KMS - August 2025)
 - **Access Tokens**: 15-minute expiry, contains user ID and role
 - **Refresh Tokens**: 7-day expiry, used to generate new access tokens
-- **Security**: HS256 signing, secure secret key management
+- **Signing Method**: 
+  - **Primary**: Cloud KMS asymmetric signing (RS256 with RSA-2048)
+  - **Fallback**: HS256 symmetric signing if KMS unavailable
+- **Key Management**:
+  - **KMS Key**: `projects/caas-467918/locations/global/keyRings/caas-auth-keys/cryptoKeys/jwt-signing-key`
+  - **Private Key**: Never leaves Cloud KMS - only signatures requested
+  - **Public Key**: Cached for 1 hour for verification performance
 - **Storage**: HTTP-only cookies (planned), currently localStorage
 
 ### User Roles & Permissions
@@ -138,6 +155,8 @@ sequenceDiagram
 ### Key Files
 - **Backend Auth**: `app/api/v1/auth_production.py`
 - **Security Utils**: `app/core/security.py`
+- **KMS JWT Service**: `app/core/kms_jwt.py` (Cloud KMS integration)
+- **Secure Secrets**: `app/core/secure_secrets.py` (Secret management)
 - **User Service**: `app/services/user_service.py`
 - **Frontend Context**: `lib/auth-context.tsx`
 
@@ -584,25 +603,46 @@ ruff check .
 
 ---
 
-## Security Considerations
+## Security Considerations (Enterprise-Grade - Updated August 2025)
 
 ### Authentication Security
-- **JWT Signing**: HS256 with secure secret key
+- **JWT Signing**: 
+  - **Primary**: Cloud KMS asymmetric signing (RS256) - private key never leaves KMS
+  - **Fallback**: HS256 symmetric signing for backwards compatibility
 - **Token Expiry**: Short-lived access tokens (15 min)
-- **Password Security**: bcrypt hashing with salt
-- **Session Management**: Proper token refresh flow
+- **Password Security**: bcrypt hashing with salt (version pinned for compatibility)
+- **Session Management**: Proper token refresh flow with 7-day refresh tokens
+
+### Secret Management (Crown Jewels)
+- **Google Secret Manager**: All sensitive credentials stored with:
+  - Per-secret IAM policies (least-privilege access)
+  - Complete audit logging via Cloud Audit Logs
+  - Automatic versioning and rotation support
+  - Secrets mounted as files in Cloud Run (not environment variables)
+- **Cloud KMS**: Asymmetric key management for JWT signing
+  - Hardware Security Module (HSM) option available
+  - Cryptographic attestation for compliance
+  - Key rotation without service disruption
 
 ### API Security
 - **CORS**: Configured for production domains only
-- **Rate Limiting**: Consider implementing for public endpoints
+- **Rate Limiting**: Implemented via slowapi middleware
 - **Input Validation**: Pydantic models validate all inputs
 - **Error Handling**: No sensitive data in error responses
+- **Security Headers**: Comprehensive security headers via middleware
 
 ### Infrastructure Security
-- **Service Accounts**: Minimal permissions principle
+- **Service Accounts**: 
+  - Least-privilege principle enforced
+  - Service account: `102964896009-compute@developer.gserviceaccount.com`
+  - Only necessary permissions granted per resource
 - **Network Security**: Cloud Run IAM restrictions
-- **Secrets Management**: Environment variables for sensitive data
+- **Audit Logging**: Full audit trail for:
+  - Secret Manager access
+  - Cloud KMS operations
+  - Authentication attempts
 - **HTTPS**: All communications encrypted in transit
+- **Monitoring**: Continuous health checks and security alerts
 
 ---
 

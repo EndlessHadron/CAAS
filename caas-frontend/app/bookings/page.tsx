@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation'
 import { bookingsApi } from '@/lib/api-client'
 import Link from 'next/link'
 import { CalendarIcon, MapPinIcon, ClockIcon, CurrencyPoundIcon, SparklesIcon } from '@heroicons/react/24/outline'
+import PayButton from '@/components/payment/PayButton'
 
 export default function BookingsPage() {
   const { user } = useAuth()
@@ -261,6 +262,11 @@ export default function BookingsPage() {
                         Cancel Booking
                       </button>
                     )}
+                    <PayButton 
+                      bookingId={booking.booking_id}
+                      status={booking.status}
+                      payment={booking.payment}
+                    />
                     {booking.status === 'completed' && !booking.rating && (
                       <Link
                         href={`/bookings/${booking.booking_id}/rate`}
