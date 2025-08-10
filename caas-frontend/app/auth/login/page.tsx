@@ -1,19 +1,21 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/lib/auth-context'
 import { EyeIcon, EyeSlashIcon, SparklesIcon } from '@heroicons/react/24/outline'
 
-export default function LoginPage() {
+function LoginContent() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const { login } = useAuth()
+  const { login, user } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const returnUrl = searchParams.get('from') || null
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -22,8 +24,25 @@ export default function LoginPage() {
 
     try {
       await login(email, password)
-      // Get user data and redirect based on role immediately
-      router.push('/admin') // Direct redirect for testing
+      
+      // Check if there's a return URL
+      if (returnUrl) {
+        router.push(returnUrl)
+      } else if (user?.role) {
+        // Redirect based on role
+        if (user.role === 'admin') {
+          router.push('/admin')
+        } else if (user.role === 'client') {
+          router.push('/client')
+        } else if (user.role === 'cleaner') {
+          router.push('/cleaner')
+        } else {
+          router.push('/')
+        }
+      } else {
+        // Fallback if no user data - just go to home
+        router.push('/')
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Invalid email or password')
     } finally {
@@ -192,5 +211,17 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   )
 }

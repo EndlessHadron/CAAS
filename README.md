@@ -374,9 +374,6 @@ For testing the platform, use these pre-created accounts:
 
 ### Client User (Customer Account)
 - **Email**: `client@neatly.com`
-
-
-
 - **Password**: `Client123!`
 - **Dashboard**: [/client](https://caas-frontend-102964896009.europe-west2.run.app/client)
 - **Features**: Book services, manage profile, view bookings, select cleaners

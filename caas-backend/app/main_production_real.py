@@ -60,7 +60,12 @@ app = FastAPI(
 # Add CORS middleware with production settings
 allowed_origins = [
     "https://caas-frontend-102964896009.europe-west2.run.app",
-    "http://localhost:3000"
+    "https://caas-frontend-102964896009.us-central1.run.app",
+    "https://theneatlyapp.com",
+    "https://www.theneatlyapp.com",
+    "https://api.theneatlyapp.com",
+    "http://localhost:3000",
+    "http://localhost:3001"
 ]
 
 app.add_middleware(
@@ -76,7 +81,13 @@ app.add_middleware(
     TrustedHostMiddleware,
     allowed_hosts=[
         "caas-backend-102964896009.europe-west2.run.app",
-        "caas-frontend-102964896009.europe-west2.run.app", 
+        "caas-backend-102964896009.us-central1.run.app",
+        "caas-frontend-102964896009.europe-west2.run.app",
+        "caas-frontend-102964896009.us-central1.run.app",
+        "api.theneatlyapp.com",
+        "theneatlyapp.com",
+        "www.theneatlyapp.com",
+        "*.theneatlyapp.com",
         "neatly.app",
         "*.neatly.app",
         "localhost"
@@ -278,6 +289,16 @@ try:
 except ImportError as e:
     logger.warning(f"Could not import system module: {e}. System debugging disabled.")
 
+# Include diagnostic router (TEMPORARY - for production troubleshooting)
+try:
+    from app.api.v1 import diagnostic
+    app.include_router(diagnostic.router, prefix="/api/v1", tags=["Diagnostic"])
+    logger.warning("DIAGNOSTIC ENDPOINTS ENABLED - Remove after fixing production issues")
+except ImportError as e:
+    pass  # Diagnostic module is optional
+except Exception as e:
+    logger.error(f"Failed to register diagnostic endpoints: {e}")
+
 # Include admin router with full security and audit logging
 # Auth issues resolved - re-enabling admin system
 try:
@@ -297,6 +318,26 @@ from app.simple_bookings import router as booking_router
 # Include booking router
 app.include_router(booking_router, prefix="/api/v1/bookings", tags=["Bookings"])
 logger.info("Clean booking system loaded successfully")
+
+# Include payment system
+try:
+    from app.api.v1 import payments
+    app.include_router(payments.router, prefix="/api/v1/payments", tags=["Payments"])
+    logger.info("Payment system loaded successfully")
+except ImportError as e:
+    logger.warning(f"Could not import payments module: {e}. Payment functionality disabled.")
+except Exception as e:
+    logger.error(f"Error loading payment router: {e}. Payment functionality disabled.")
+
+# Include webhook system
+try:
+    from app.api.v1 import webhooks
+    app.include_router(webhooks.router, prefix="/api/v1/webhooks", tags=["Webhooks"])
+    logger.info("Webhook system loaded successfully")
+except ImportError as e:
+    logger.warning(f"Could not import webhooks module: {e}. Webhook functionality disabled.")
+except Exception as e:
+    logger.error(f"Error loading webhook router: {e}. Webhook functionality disabled.")
 
 # Add simple user management endpoints
 from fastapi import APIRouter, Depends

@@ -19,22 +19,14 @@ from dataclasses import dataclass
 import os
 
 def get_jwt_secret() -> str:
-    """Get JWT secret with fallback to environment"""
-    try:
-        from app.core.secrets_manager import get_jwt_secret as get_secret_manager_jwt
-        return get_secret_manager_jwt()
-    except Exception as e:
-        logger.warning(f"Secret Manager failed, using fallback: {e}")
-        return os.getenv('JWT_SECRET_KEY', 'fallback-jwt-secret-key-change-in-production')
+    """Get JWT secret from secure storage using centralized service"""
+    from app.core.secure_secrets import get_jwt_secret as get_secure_jwt
+    return get_secure_jwt()
 
 def get_refresh_secret() -> str:
-    """Get refresh secret with fallback to environment"""
-    try:
-        from app.core.secrets_manager import get_refresh_secret as get_secret_manager_refresh
-        return get_secret_manager_refresh()
-    except Exception as e:
-        logger.warning(f"Secret Manager failed, using fallback: {e}")
-        return os.getenv('REFRESH_SECRET_KEY', 'fallback-refresh-secret-key-change-in-production')
+    """Get refresh secret from secure storage using centralized service"""
+    from app.core.secure_secrets import get_refresh_secret as get_secure_refresh
+    return get_secure_refresh()
 from app.config import settings
 
 logger = logging.getLogger(__name__)

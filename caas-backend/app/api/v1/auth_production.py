@@ -4,15 +4,27 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional
 import logging
 
-from app.core.security import (
-    create_access_token, 
-    create_refresh_token,
-    verify_token
-)
+logger = logging.getLogger(__name__)
+
+try:
+    # Try to use KMS-based JWT service first
+    from app.core.kms_jwt import (
+        create_access_token, 
+        create_refresh_token,
+        verify_token
+    )
+    logger.info("Using KMS-based JWT service")
+except ImportError:
+    # Fall back to standard security module
+    from app.core.security import (
+        create_access_token, 
+        create_refresh_token,
+        verify_token
+    )
+    logger.info("Using standard JWT service")
+    
 from app.services.user_service import user_service
 from app.models.users import UserCreate, UserRole
-
-logger = logging.getLogger(__name__)
 
 router = APIRouter()
 security = HTTPBearer()

@@ -27,6 +27,12 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
+def get_jwt_signing_key() -> str:
+    """Get JWT signing key from secure storage using centralized service"""
+    from app.core.secure_secrets import get_jwt_secret
+    return get_jwt_secret()
+
+
 def create_access_token(data: Dict[str, Any], expires_delta: Optional[timedelta] = None) -> str:
     """Create a JWT access token"""
     to_encode = data.copy()
@@ -38,7 +44,9 @@ def create_access_token(data: Dict[str, Any], expires_delta: Optional[timedelta]
     
     to_encode.update({"exp": expire, "type": "access"})
     
-    encoded_jwt = jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
+    # Get secret key from secure storage
+    secret_key = get_jwt_signing_key()
+    encoded_jwt = jwt.encode(to_encode, secret_key, algorithm=settings.algorithm)
     return encoded_jwt
 
 
@@ -49,14 +57,18 @@ def create_refresh_token(data: Dict[str, Any]) -> str:
     
     to_encode.update({"exp": expire, "type": "refresh"})
     
-    encoded_jwt = jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
+    # Get secret key from secure storage
+    secret_key = get_jwt_signing_key()
+    encoded_jwt = jwt.encode(to_encode, secret_key, algorithm=settings.algorithm)
     return encoded_jwt
 
 
 def verify_token(token: str, token_type: str = "access") -> Dict[str, Any]:
     """Verify and decode a JWT token"""
     try:
-        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+        # Get secret key from secure storage
+        secret_key = get_jwt_signing_key()
+        payload = jwt.decode(token, secret_key, algorithms=[settings.algorithm])
         
         if payload.get("type") != token_type:
             raise HTTPException(

@@ -150,7 +150,7 @@ export default function NewBookingPage() {
     setError('')
 
     try {
-      await bookingsApi.createBooking({
+      const response = await bookingsApi.createBooking({
         service_type: data.service_type,
         date: data.date,
         time: data.time,
@@ -168,7 +168,8 @@ export default function NewBookingPage() {
         preferred_cleaner_id: selectedCleaner || undefined,
       })
       
-      router.push('/bookings?success=1')
+      // Redirect to payment page to complete booking with payment
+      router.push(`/bookings/pay/${response.booking_id}`)
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Failed to create booking. Please try again.')
     } finally {
