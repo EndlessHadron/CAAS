@@ -160,12 +160,59 @@ async def confirm_payment(
         
         if intent.status == 'succeeded':
             update_data['payment.paid_at'] = datetime.utcnow()
-            update_data['status'] = 'paid'
+            
+            # Get current booking to check if cleaner is assigned
+            booking_doc = booking_ref.get()
+            booking = booking_doc.to_dict()
+            
+            # Update status based on cleaner assignment
+            if booking.get('cleaner_id'):
+                # Both cleaner assigned AND payment completed = confirmed
+                update_data['status'] = 'confirmed'
+            else:
+                # Payment completed but no cleaner yet = paid (waiting for cleaner)
+                update_data['status'] = 'paid'
             
             # Get receipt URL if available
             if intent.charges and intent.charges.data:
                 charge = intent.charges.data[0]
                 update_data['payment.receipt_url'] = charge.receipt_url
+                
+            # Send payment confirmation email
+            try:
+                # Get booking details for email
+                booking = booking_ref.get().to_dict()
+                
+                # Get user details
+                user_ref = db.collection('users').document(user_id)
+                user = user_ref.get().to_dict()
+                
+                from app.services.resend_email_service import email_service
+                import asyncio
+                
+                # Prepare payment details
+                payment_details = {
+                    'payment_intent_id': intent.id,
+                    'amount': f"{intent.amount / 100:.2f}",
+                    'booking_id': request.booking_id,
+                    'service_type': booking.get('service', {}).get('type', 'Cleaning Service'),
+                    'booking_date': booking.get('date', 'As scheduled'),
+                    'payment_method': charge.payment_method_details.type if intent.charges and intent.charges.data else 'Card',
+                    'last4': charge.payment_method_details.card.last4 if intent.charges and intent.charges.data and hasattr(charge.payment_method_details, 'card') else '****'
+                }
+                
+                # Send email asynchronously
+                asyncio.create_task(
+                    email_service.send_payment_confirmation(
+                        user.get('email'),
+                        user.get('profile', {}).get('first_name', 'Customer'),
+                        payment_details
+                    )
+                )
+                logger.info(f"Payment confirmation email sent to {user.get('email')}")
+            except Exception as e:
+                logger.error(f"Failed to send payment confirmation email: {e}")
+                # Don't fail the payment confirmation if email fails
         
         booking_ref.update(update_data)
         

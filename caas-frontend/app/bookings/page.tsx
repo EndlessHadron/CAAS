@@ -92,25 +92,25 @@ export default function BookingsPage() {
       {/* Header with glass effect */}
       <div className="relative">
         <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500/10 to-accent-500/10 rounded-[2rem] blur-xl opacity-50"></div>
-        <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-[2rem] p-8 border border-white/30">
-          <div className="flex justify-between items-center">
+        <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-[2rem] p-4 sm:p-6 lg:p-8 border border-white/30">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
             <div>
-              <h1 className="text-3xl font-bold text-secondary-900 flex items-center">
-                <SparklesIcon className="h-8 w-8 mr-3 text-primary-600" />
+              <h1 className="text-2xl sm:text-3xl font-bold text-secondary-900 flex items-center">
+                <SparklesIcon className="h-6 w-6 sm:h-8 sm:w-8 mr-2 sm:mr-3 text-primary-600" />
                 My Bookings
               </h1>
-              <p className="text-secondary-600 mt-2 text-lg">
+              <p className="text-secondary-600 mt-2 text-base sm:text-lg">
                 Manage your active <span className="bg-gradient-to-r from-primary-600 via-primary-500 to-accent-500 bg-clip-text text-transparent font-medium">neatly</span> cleaning service bookings
               </p>
             </div>
-            <div className="flex space-x-3">
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
               <Link 
                 href="/bookings/cancelled" 
-                className="px-4 py-3 bg-white/[0.08] hover:bg-white/[0.12] text-secondary-700 font-normal rounded-lg transition-all duration-200 border border-white/30 hover:border-white/40"
+                className="px-4 py-3 bg-white/[0.08] hover:bg-white/[0.12] text-secondary-700 font-normal rounded-lg transition-all duration-200 border border-white/30 hover:border-white/40 text-center min-h-[44px] flex items-center justify-center"
               >
                 View Cancelled
               </Link>
-              <Link href="/bookings/new" className="btn-primary">
+              <Link href="/bookings/new" className="btn-primary text-center min-h-[44px] flex items-center justify-center">
                 Book New Service
               </Link>
             </div>
@@ -139,11 +139,11 @@ export default function BookingsPage() {
       {bookings.length === 0 ? (
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
-          <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30 p-12">
+          <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30 p-6 sm:p-8 lg:p-12">
             <div className="text-center">
-              <CalendarIcon className="h-16 w-16 text-secondary-400 mx-auto mb-4" />
-              <h3 className="text-xl font-medium text-secondary-900 mb-2">No bookings yet</h3>
-              <p className="text-secondary-600 mb-6 text-base">
+              <CalendarIcon className="h-12 w-12 sm:h-16 sm:w-16 text-secondary-400 mx-auto mb-4" />
+              <h3 className="text-lg sm:text-xl font-medium text-secondary-900 mb-2">No bookings yet</h3>
+              <p className="text-secondary-600 mb-6 text-sm sm:text-base">
                 You haven't made any bookings yet. Book your first cleaning service!
               </p>
               <Link href="/bookings/new" className="btn-primary">
@@ -158,63 +158,63 @@ export default function BookingsPage() {
             <div key={booking.booking_id} className="relative">
               {/* Glass card effect */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
-              <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30 p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-semibold text-secondary-900 capitalize">
+              <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30 p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 space-y-2 sm:space-y-0">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-lg sm:text-xl font-semibold text-secondary-900 capitalize">
                       {booking.service?.type?.replace(/_/g, ' ')} Cleaning
                     </h3>
-                    <p className="text-base text-secondary-500 mt-1">
+                    <p className="text-sm sm:text-base text-secondary-500 mt-1">
                       Booking ID: {booking.booking_id}
                     </p>
                   </div>
-                  <span className={`inline-flex px-3 py-1.5 text-sm font-semibold rounded-full ${getStatusColor(booking.status)}`}>
+                  <span className={`inline-flex px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-full self-start ${getStatusColor(booking.status)}`}>
                     {formatStatus(booking.status)}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                  <div className="flex items-center space-x-3 bg-primary-500/10 backdrop-blur-sm rounded-xl p-3 border border-primary-400/20">
-                    <CalendarIcon className="h-6 w-6 text-primary-600 flex-shrink-0" />
-                    <div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
+                  <div className="flex items-center space-x-2 sm:space-x-3 bg-primary-500/10 backdrop-blur-sm rounded-xl p-2 sm:p-3 border border-primary-400/20">
+                    <CalendarIcon className="h-5 w-5 sm:h-6 sm:w-6 text-primary-600 flex-shrink-0" />
+                    <div className="min-w-0 flex-1">
                       <p className="text-xs font-medium text-secondary-600 uppercase tracking-wide">Date & Time</p>
-                      <p className="font-semibold text-secondary-900">
+                      <p className="font-semibold text-secondary-900 text-sm sm:text-base">
                         {booking.schedule?.date || booking.date || 'Not set'}
                       </p>
-                      <p className="text-sm text-secondary-500">
+                      <p className="text-xs sm:text-sm text-secondary-500">
                         {booking.schedule?.time || booking.time || 'Not set'}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-3 bg-accent-500/10 backdrop-blur-sm rounded-xl p-3 border border-accent-400/20">
-                    <ClockIcon className="h-6 w-6 text-accent-600 flex-shrink-0" />
-                    <div>
+                  <div className="flex items-center space-x-2 sm:space-x-3 bg-accent-500/10 backdrop-blur-sm rounded-xl p-2 sm:p-3 border border-accent-400/20">
+                    <ClockIcon className="h-5 w-5 sm:h-6 sm:w-6 text-accent-600 flex-shrink-0" />
+                    <div className="min-w-0 flex-1">
                       <p className="text-xs font-medium text-secondary-600 uppercase tracking-wide">Duration</p>
-                      <p className="font-semibold text-secondary-900">
+                      <p className="font-semibold text-secondary-900 text-sm sm:text-base">
                         {booking.service?.duration || booking.duration || 'N/A'} hour{(booking.service?.duration || booking.duration) > 1 ? 's' : ''}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-3 bg-green-500/10 backdrop-blur-sm rounded-xl p-3 border border-green-400/20">
-                    <CurrencyPoundIcon className="h-6 w-6 text-green-600 flex-shrink-0" />
-                    <div>
+                  <div className="flex items-center space-x-2 sm:space-x-3 bg-green-500/10 backdrop-blur-sm rounded-xl p-2 sm:p-3 border border-green-400/20">
+                    <CurrencyPoundIcon className="h-5 w-5 sm:h-6 sm:w-6 text-green-600 flex-shrink-0" />
+                    <div className="min-w-0 flex-1">
                       <p className="text-xs font-medium text-secondary-600 uppercase tracking-wide">Price</p>
-                      <p className="font-bold text-lg text-green-600">
+                      <p className="font-bold text-base sm:text-lg text-green-600">
                         £{booking.service?.price || booking.payment?.amount || booking.total_price || '0'}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-3 bg-secondary-500/10 backdrop-blur-sm rounded-xl p-3 border border-secondary-400/20">
-                    <MapPinIcon className="h-6 w-6 text-secondary-600 flex-shrink-0" />
-                    <div>
+                  <div className="flex items-center space-x-2 sm:space-x-3 bg-secondary-500/10 backdrop-blur-sm rounded-xl p-2 sm:p-3 border border-secondary-400/20">
+                    <MapPinIcon className="h-5 w-5 sm:h-6 sm:w-6 text-secondary-600 flex-shrink-0" />
+                    <div className="min-w-0 flex-1">
                       <p className="text-xs font-medium text-secondary-600 uppercase tracking-wide">Location</p>
-                      <p className="font-semibold text-secondary-900 text-sm leading-tight">
+                      <p className="font-semibold text-secondary-900 text-xs sm:text-sm leading-tight truncate">
                         {booking.location?.address?.line1 || booking.address?.line1 || 'Not provided'}
                       </p>
-                      <p className="text-xs text-secondary-500">
+                      <p className="text-xs text-secondary-500 truncate">
                         {booking.location?.address?.city || booking.address?.city || ''} {booking.location?.address?.postcode || booking.address?.postcode || ''}
                       </p>
                     </div>
@@ -249,17 +249,17 @@ export default function BookingsPage() {
                   </div>
                 )}
 
-                <div className="flex justify-between items-center pt-4 border-t border-white/20">
-                  <div className="text-base text-secondary-500">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center pt-4 border-t border-white/20 space-y-3 sm:space-y-0">
+                  <div className="text-sm sm:text-base text-secondary-500">
                     Booked on {new Date(booking.created_at).toLocaleDateString()}
                   </div>
-                  <div className="flex space-x-3">
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
                     {booking.status === 'pending' && (
                       <button
                         onClick={() => handleCancelBooking(booking.booking_id)}
-                        className="text-base text-red-600 hover:text-red-700 font-medium transition-colors"
+                        className="text-sm sm:text-base text-red-600 hover:text-red-700 font-medium transition-colors px-2 py-1 rounded min-h-[32px]"
                       >
-                        Cancel Booking
+                        Cancel
                       </button>
                     )}
                     <PayButton 
@@ -270,16 +270,16 @@ export default function BookingsPage() {
                     {booking.status === 'completed' && !booking.rating && (
                       <Link
                         href={`/bookings/${booking.booking_id}/rate`}
-                        className="text-base text-primary-600 hover:text-primary-700 font-medium transition-colors"
+                        className="text-sm sm:text-base text-primary-600 hover:text-primary-700 font-medium transition-colors px-2 py-1 rounded min-h-[32px] flex items-center"
                       >
                         Rate & Review
                       </Link>
                     )}
                     <Link
                       href={`/bookings/${booking.booking_id}`}
-                      className="text-base text-primary-600 hover:text-primary-700 font-medium transition-colors"
+                      className="text-sm sm:text-base text-primary-600 hover:text-primary-700 font-medium transition-colors px-2 py-1 rounded min-h-[32px] flex items-center"
                     >
-                      View Details
+                      Details
                     </Link>
                   </div>
                 </div>

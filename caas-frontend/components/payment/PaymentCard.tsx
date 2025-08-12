@@ -103,7 +103,7 @@ function CheckoutForm({ bookingId, amount, onSuccess, onError }: PaymentFormProp
                 billingDetails: {
                   name: 'auto',
                   email: 'auto',
-                  phone: 'never',
+                  phone: 'auto',
                   address: 'auto'
                 }
               }

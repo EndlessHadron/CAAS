@@ -37,7 +37,7 @@ jobs:
         import time
         import json
         
-        BASE_URL = "https://caas-backend-102964896009.europe-west2.run.app"
+        BASE_URL = "https://caas-backend-102964896009.us-central1.run.app"
         
         def test_health_endpoint():
             response = requests.get(f"{BASE_URL}/health", timeout=10)
@@ -159,8 +159,8 @@ jobs:
             4. Consider rolling back if recent deployment caused the issue
             
             ## Quick Links
-            - [Production Service](https://caas-backend-102964896009.europe-west2.run.app/health)
-            - [System Status](https://caas-backend-102964896009.europe-west2.run.app/api/v1/system/info)
+            - [Production Service](https://caas-backend-102964896009.us-central1.run.app/health)
+            - [System Status](https://caas-backend-102964896009.us-central1.run.app/api/v1/system/info)
             - [Deployment Runbook](DEPLOYMENT_RUNBOOK.md)
             `,
             labels: ['bug', 'production', 'urgent']

@@ -107,11 +107,27 @@ fi
 
 # Verify traffic routing
 TRAFFIC_ALLOCATION=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format="value(status.traffic[0].percent)")
-echo "   Traffic allocation: $TRAFFIC_ALLOCATION% to latest revision"
+TRAFFIC_REVISION=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format="value(status.traffic[0].revisionName)")
+echo "   Traffic allocation: $TRAFFIC_ALLOCATION% to revision: $TRAFFIC_REVISION"
+echo "   Latest revision: $NEW_REVISION"
 
-if [ "$TRAFFIC_ALLOCATION" != "100" ]; then
-    echo "⚠️  WARNING: Routing all traffic to new revision..."
-    gcloud run services update-traffic $SERVICE_NAME --region=$REGION --to-latest
+if [ "$TRAFFIC_REVISION" != "$NEW_REVISION" ] || [ "$TRAFFIC_ALLOCATION" != "100" ]; then
+    echo "🔄 Routing all traffic to new revision: $NEW_REVISION"
+    gcloud run services update-traffic $SERVICE_NAME --region=$REGION --to-revisions="$NEW_REVISION=100" --quiet
+    
+    # Verify traffic routing was successful
+    sleep 5
+    NEW_TRAFFIC_REVISION=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format="value(status.traffic[0].revisionName)")
+    NEW_TRAFFIC_ALLOCATION=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format="value(status.traffic[0].percent)")
+    
+    if [ "$NEW_TRAFFIC_REVISION" = "$NEW_REVISION" ] && [ "$NEW_TRAFFIC_ALLOCATION" = "100" ]; then
+        echo "✅ Traffic successfully routed to new revision"
+    else
+        echo "❌ Traffic routing failed - revision: $NEW_TRAFFIC_REVISION, allocation: $NEW_TRAFFIC_ALLOCATION%"
+        exit 1
+    fi
+else
+    echo "✅ Traffic already routed to latest revision"
 fi
 
 # Wait for deployment to stabilize

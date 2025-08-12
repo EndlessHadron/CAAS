@@ -59,7 +59,6 @@ app = FastAPI(
 
 # Add CORS middleware with production settings
 allowed_origins = [
-    "https://caas-frontend-102964896009.europe-west2.run.app",
     "https://caas-frontend-102964896009.us-central1.run.app",
     "https://theneatlyapp.com",
     "https://www.theneatlyapp.com",
@@ -80,9 +79,7 @@ app.add_middleware(
 app.add_middleware(
     TrustedHostMiddleware,
     allowed_hosts=[
-        "caas-backend-102964896009.europe-west2.run.app",
         "caas-backend-102964896009.us-central1.run.app",
-        "caas-frontend-102964896009.europe-west2.run.app",
         "caas-frontend-102964896009.us-central1.run.app",
         "api.theneatlyapp.com",
         "theneatlyapp.com",
@@ -289,6 +286,15 @@ try:
 except ImportError as e:
     logger.warning(f"Could not import system module: {e}. System debugging disabled.")
 
+# Include test email router (temporary for testing)
+# Commented out to fix deployment issues
+# try:
+#     from app.api.v1 import test_email
+#     app.include_router(test_email.router, prefix="/api/v1/test", tags=["Testing"])
+#     logger.info("Test email router loaded successfully")
+# except ImportError as e:
+#     logger.warning(f"Could not import test_email module: {e}")
+
 # Include diagnostic router (TEMPORARY - for production troubleshooting)
 try:
     from app.api.v1 import diagnostic
@@ -336,8 +342,16 @@ try:
     logger.info("Webhook system loaded successfully")
 except ImportError as e:
     logger.warning(f"Could not import webhooks module: {e}. Webhook functionality disabled.")
+
+# Include contractor/cleaner system
+try:
+    from app.api.v1 import contractors
+    app.include_router(contractors.router, prefix="/api/v1/contractors", tags=["Contractors"])
+    logger.info("Contractor system loaded successfully")
+except ImportError as e:
+    logger.warning(f"Could not import contractors module: {e}. Contractor functionality disabled.")
 except Exception as e:
-    logger.error(f"Error loading webhook router: {e}. Webhook functionality disabled.")
+    logger.error(f"Error loading contractor router: {e}. Contractor functionality disabled.")
 
 # Add simple user management endpoints
 from fastapi import APIRouter, Depends

@@ -41,7 +41,7 @@
    - [ ] SEPA Direct Debit - Optional for EU payments
 
 2. **Apple Pay Domain Verification**
-   - [ ] Add domain: caas-frontend-102964896009.europe-west2.run.app
+   - [ ] Add domain: caas-frontend-102964896009.us-central1.run.app
    - [ ] Download verification file
    - [ ] Upload to /.well-known/apple-developer-merchantid-domain-association
 

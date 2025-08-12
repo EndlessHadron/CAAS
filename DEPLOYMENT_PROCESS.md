@@ -55,44 +55,44 @@ After any deployment, verify:
 
 1. **New Revision Created**: 
    ```bash
-   gcloud run revisions list --service=caas-backend --region=europe-west2 --limit=3
+   gcloud run revisions list --service=caas-backend --region=us-central1 --limit=3
    ```
 
 2. **Traffic Routing**: 
    ```bash
-   gcloud run services describe caas-backend --region=europe-west2 --format="value(status.traffic[0].percent)"
+   gcloud run services describe caas-backend --region=us-central1 --format="value(status.traffic[0].percent)"
    ```
 
 3. **Health Check**: 
    ```bash
-   curl https://caas-backend-102964896009.europe-west2.run.app/health
+   curl https://caas-backend-102964896009.us-central1.run.app/health
    ```
 
 4. **System Info**: 
    ```bash
-   curl https://caas-backend-102964896009.europe-west2.run.app/api/v1/system/info
+   curl https://caas-backend-102964896009.us-central1.run.app/api/v1/system/info
    ```
 
 5. **Admin Endpoint**: 
    ```bash
-   curl -I https://caas-backend-102964896009.europe-west2.run.app/api/v1/admin/dashboard/metrics
+   curl -I https://caas-backend-102964896009.us-central1.run.app/api/v1/admin/dashboard/metrics
    ```
    Expected: 401/403 (requires auth) or 200 (if authenticated)
 
 6. **Authentication**: 
    ```bash
-   curl -X POST https://caas-backend-102964896009.europe-west2.run.app/api/v1/auth/register \
+   curl -X POST https://caas-backend-102964896009.us-central1.run.app/api/v1/auth/register \
      -H "Content-Type: application/json" \
      -d '{"email":"test@example.com","password":"test123","first_name":"Test","last_name":"User","role":"client"}'
    ```
 
 ## Production URLs
 
-- **Main Service**: https://caas-backend-102964896009.europe-west2.run.app
-- **Health Check**: https://caas-backend-102964896009.europe-west2.run.app/health
-- **API Documentation**: https://caas-backend-102964896009.europe-west2.run.app/docs
-- **System Status**: https://caas-backend-102964896009.europe-west2.run.app/api/v1/system/info
-- **Admin Panel**: https://caas-backend-102964896009.europe-west2.run.app/api/v1/admin/dashboard/metrics
+- **Main Service**: https://caas-backend-102964896009.us-central1.run.app
+- **Health Check**: https://caas-backend-102964896009.us-central1.run.app/health
+- **API Documentation**: https://caas-backend-102964896009.us-central1.run.app/docs
+- **System Status**: https://caas-backend-102964896009.us-central1.run.app/api/v1/system/info
+- **Admin Panel**: https://caas-backend-102964896009.us-central1.run.app/api/v1/admin/dashboard/metrics
 
 ## Troubleshooting
 
@@ -115,7 +115,7 @@ gcloud logging read "resource.type=cloud_run_revision AND resource.labels.servic
 **Symptoms**: New revision exists but not receiving traffic
 **Solution**: 
 ```bash
-gcloud run services update-traffic caas-backend --region=europe-west2 --to-latest
+gcloud run services update-traffic caas-backend --region=us-central1 --to-latest
 ```
 
 ### Issue: Build Timeouts
@@ -150,19 +150,19 @@ If deployment fails or issues occur:
 
 1. **Identify Previous Working Revision**:
    ```bash
-   gcloud run revisions list --service=caas-backend --region=europe-west2 --limit=5
+   gcloud run revisions list --service=caas-backend --region=us-central1 --limit=5
    ```
 
 2. **Route Traffic to Previous Revision**:
    ```bash
    gcloud run services update-traffic caas-backend \
-     --region=europe-west2 \
+     --region=us-central1 \
      --to-revisions=PREVIOUS_REVISION_NAME=100
    ```
 
 3. **Verify Rollback**:
    ```bash
-   curl https://caas-backend-102964896009.europe-west2.run.app/health
+   curl https://caas-backend-102964896009.us-central1.run.app/health
    ```
 
 ## Container Image Management
@@ -181,7 +181,7 @@ gcloud container images list-tags gcr.io/caas-467918/caas-backend --limit=10
 ```bash
 gcloud run deploy caas-backend \
   --image gcr.io/caas-467918/caas-backend:deploy-1234567890 \
-  --region=europe-west2
+  --region=us-central1
 ```
 
 ## Best Practices
@@ -210,7 +210,7 @@ steps:
         gcloud builds submit --tag gcr.io/$PROJECT_ID/caas-backend:$SHORT_SHA .
         gcloud run deploy caas-backend \
           --image gcr.io/$PROJECT_ID/caas-backend:$SHORT_SHA \
-          --region=europe-west2 \
+          --region=us-central1 \
           --allow-unauthenticated
 ```
 

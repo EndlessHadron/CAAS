@@ -5,7 +5,7 @@
 ## Quick Project Summary
 **CAAS (Cleaning as a Service)** is a live production SaaS platform connecting clients with cleaning contractors in London, UK.
 
-- **Production URL**: https://caas-backend-102964896009.europe-west2.run.app  
+- **Production URL**: https://caas-backend-102964896009.us-central1.run.app  
 - **Status**: ✅ OPERATIONAL - Authentication system fully restored
 - **Architecture**: Next.js 14 + FastAPI on Google Cloud Run + Firestore
 - **Last Major Issue**: bcrypt compatibility fixed August 5, 2025
@@ -56,7 +56,7 @@
 - **Auth Context**: `caas-frontend/lib/auth-context.tsx`
 
 ### Deployment & Operations
-- **Production Deploy**: `./deploy-with-verification.sh`
+- **Production Deploy**: `./deploy-frontend.sh` and `./deploy-container.sh`
 - **Health Monitor**: `monitoring/auth-health-monitor.py`
 - **Ops Runbook**: `DEPLOYMENT_RUNBOOK.md`
 - **Dependencies**: `requirements.txt` (root), `caas-backend/requirements.txt`
@@ -101,19 +101,22 @@
 
 ### Deployment Process
 ```bash
-# Full production deployment with health checks
-./deploy-with-verification.sh
+# Frontend deployment (includes SEO changes)
+./deploy-frontend.sh
 
-# Backend-only deployment
-./deploy-with-verification.sh backend
+# Backend deployment
+./deploy-container.sh
+
+# Full deployment (both services)
+./deploy-frontend.sh && ./deploy-container.sh
 ```
 
-### Health Verification (Automatic)
+### Health Verification (Manual)
 - ✅ Service health endpoints responding
 - ✅ Authentication flow (register + login) working  
 - ✅ New container revision receiving traffic
 - ✅ Code integrity verified
-- ⚠️ Automatic rollback on failure
+- ⚠️ Monitor logs for any deployment issues
 
 ## Emergency Procedures
 
@@ -155,12 +158,12 @@ cd caas-frontend && npm run dev
 python monitoring/auth-health-monitor.py
 
 # Verify system health
-curl https://caas-backend-102964896009.europe-west2.run.app/api/v1/system/info
+curl https://caas-backend-102964896009.us-central1.run.app/api/v1/system/info
 ```
 
 ## Critical Notes for New Engineers
 
-1. **Never use basic deployment scripts** - Always use `deploy-with-verification.sh`
+1. **Use proper deployment scripts** - Use `./deploy-frontend.sh` and `./deploy-container.sh`
 2. **Monitor system health endpoints** - They prevent issues we've already solved
 3. **Role caching issue exists** - Users must re-login after role changes
 4. **bcrypt version pinned** - Don't upgrade without testing compatibility
@@ -176,13 +179,13 @@ curl /api/v1/system/info
 curl -X POST /api/v1/auth/login -d '{"email":"test@example.com","password":"test123"}'
 
 # Deploy to production
-./deploy-with-verification.sh
+./deploy-frontend.sh && ./deploy-container.sh
 
 # View recent logs
 gcloud logging read "resource.type=cloud_run_revision" --limit=50
 
 # Check service status
-gcloud run services describe caas-backend --region=europe-west2
+gcloud run services describe caas-backend --region=us-central1
 ```
 
 ---

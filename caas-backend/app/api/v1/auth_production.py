@@ -113,6 +113,24 @@ async def register(user_data: UserRegister):
         # Format user response as dict
         user_response = user_service.format_user_response(user).dict()
         
+        # Send welcome email
+        try:
+            from app.services.resend_email_service import email_service
+            import asyncio
+            
+            # Send welcome email asynchronously
+            asyncio.create_task(
+                email_service.send_welcome_email(
+                    user_data.email,
+                    user_data.first_name,
+                    user_data.role
+                )
+            )
+            logger.info(f"Welcome email queued for: {user_data.email}")
+        except Exception as e:
+            logger.error(f"Failed to send welcome email: {e}")
+            # Don't fail registration if email fails
+        
         logger.info(f"User registered successfully: {user_data.email}")
         
         return TokenResponse(

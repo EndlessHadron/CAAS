@@ -321,4 +321,112 @@ body::before {
       animation: none;
     }
   }
+
+  /* Mobile-specific navigation optimizations */
+  @media (max-width: 768px) {
+    /* Ensure larger logo on mobile doesn't affect desktop */
+    .mobile-logo-larger {
+      @apply h-24 w-auto;
+    }
+    
+    /* Mobile navigation button optimizations */
+    .mobile-nav-button {
+      @apply min-h-[44px] px-3 py-2 text-sm;
+    }
+    
+    /* Mobile dashboard card improvements */
+    .mobile-dashboard-card {
+      @apply p-4 rounded-xl;
+    }
+    
+    /* Mobile payment form optimizations */
+    .mobile-payment-section {
+      @apply p-4 space-y-4;
+    }
+    
+    /* Mobile responsive text */
+    .mobile-heading {
+      @apply text-lg;
+    }
+    
+    .mobile-body-text {
+      @apply text-sm;
+    }
+    
+    .mobile-caption {
+      @apply text-xs;
+    }
+  }
+
+  /* Desktop-only styles to ensure no mobile changes affect desktop */
+  @media (min-width: 769px) {
+    .desktop-preserve-layout {
+      /* Ensures desktop layout remains unchanged */
+    }
+  }
+
+  /* Advanced Animation Classes */
+  
+  /* Circuit Board Animation */
+  @keyframes circuit-pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+  
+  .circuit-line {
+    @apply absolute bg-gradient-to-r from-primary-400/20 via-accent-400/40 to-primary-400/20;
+    animation: circuit-pulse 3s ease-in-out infinite;
+  }
+  
+  /* Data Particles */
+  @keyframes particle-flow {
+    0% { transform: translateX(-100px) translateY(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateX(calc(100vw + 100px)) translateY(-30px); opacity: 0; }
+  }
+  
+  @keyframes particle-float {
+    0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    33% { transform: translateY(-30px) translateX(20px) rotate(120deg); }
+    66% { transform: translateY(20px) translateX(-20px) rotate(240deg); }
+  }
+  
+  .data-particle {
+    @apply absolute w-2 h-2 bg-gradient-to-r from-primary-400 to-accent-400 rounded-full;
+    animation: particle-flow 15s linear infinite;
+  }
+  
+  
+  /* Floating Animation */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  /* Number Counter */
+  @property --num {
+    syntax: "<integer>";
+    initial-value: 0;
+    inherits: false;
+  }
+  
+  .counter-animation {
+    animation: counter 2s ease-out forwards;
+    counter-reset: num var(--num);
+  }
+  
+  .counter-animation::after {
+    content: counter(num);
+  }
+  
+  @keyframes counter {
+    to {
+      --num: 100;
+    }
+  }
 }

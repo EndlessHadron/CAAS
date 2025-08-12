@@ -199,12 +199,12 @@ export default function NewBookingPage() {
       {/* Header with glass effect */}
       <div className="relative">
         <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500/10 to-accent-500/10 rounded-[2rem] blur-xl opacity-50"></div>
-        <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-[2rem] p-8 border border-white/30">
-          <h1 className="text-3xl font-bold text-secondary-900 flex items-center">
-            <SparklesIcon className="h-8 w-8 mr-3 text-primary-600" />
+        <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-[2rem] p-4 sm:p-6 lg:p-8 border border-white/30">
+          <h1 className="text-2xl sm:text-3xl font-bold text-secondary-900 flex items-center">
+            <SparklesIcon className="h-6 w-6 sm:h-8 sm:w-8 mr-2 sm:mr-3 text-primary-600" />
             Book a Cleaning Service
           </h1>
-          <p className="text-secondary-600 mt-2 text-lg">
+          <p className="text-secondary-600 mt-2 text-base sm:text-lg">
             Schedule your <span className="bg-gradient-to-r from-primary-600 via-primary-500 to-accent-500 bg-clip-text text-transparent font-medium">neatly</span> cleaning service in London
           </p>
         </div>
@@ -224,13 +224,13 @@ export default function NewBookingPage() {
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
           <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30">
-            <div className="p-6 border-b border-white/20">
-              <h2 className="text-xl font-semibold text-secondary-900 flex items-center">
-                <HomeIcon className="h-6 w-6 mr-2 text-primary-600" />
+            <div className="p-4 sm:p-6 border-b border-white/20">
+              <h2 className="text-lg sm:text-xl font-semibold text-secondary-900 flex items-center">
+                <HomeIcon className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-primary-600" />
                 Service Type
               </h2>
             </div>
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {serviceTypes.map(service => (
               <label key={service.value} className="cursor-pointer">
@@ -245,9 +245,9 @@ export default function NewBookingPage() {
                     ? 'border-primary-500/50 bg-primary-500/10 backdrop-blur-sm'
                     : 'border-white/20 bg-white/[0.04] hover:bg-white/[0.06] backdrop-blur-sm'
                 }`}>
-                  <h3 className="font-semibold text-secondary-900">{service.label}</h3>
-                  <p className="text-sm text-secondary-600">{service.description}</p>
-                  <p className="text-lg font-bold text-primary-600 mt-2">£{service.price}/hour</p>
+                  <h3 className="text-sm sm:text-base font-semibold text-secondary-900">{service.label}</h3>
+                  <p className="text-xs sm:text-sm text-secondary-600">{service.description}</p>
+                  <p className="text-base sm:text-lg font-bold text-primary-600 mt-2">£{service.price}/hour</p>
                 </div>
               </label>
             ))}
@@ -263,16 +263,16 @@ export default function NewBookingPage() {
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
           <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30">
-            <div className="p-6 border-b border-white/20">
-              <h2 className="text-xl font-semibold text-secondary-900 flex items-center">
-                <CalendarIcon className="h-6 w-6 mr-2 text-primary-600" />
+            <div className="p-4 sm:p-6 border-b border-white/20">
+              <h2 className="text-lg sm:text-xl font-semibold text-secondary-900 flex items-center">
+                <CalendarIcon className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-primary-600" />
                 Schedule
               </h2>
             </div>
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-base font-medium text-secondary-700 mb-2">Date</label>
+                  <label className="block text-sm sm:text-base font-medium text-secondary-700 mb-2">Date</label>
                   <input
                     {...register('date', { required: 'Date is required' })}
                     type="date"
@@ -284,7 +284,7 @@ export default function NewBookingPage() {
               )}
             </div>
                 <div>
-                  <label className="block text-base font-medium text-secondary-700 mb-2">Time</label>
+                  <label className="block text-sm sm:text-base font-medium text-secondary-700 mb-2">Time</label>
                   <input
                     {...register('time', { required: 'Time is required' })}
                     type="time"
@@ -295,7 +295,7 @@ export default function NewBookingPage() {
               )}
             </div>
                 <div>
-                  <label className="block text-base font-medium text-secondary-700 mb-2">Duration (hours)</label>
+                  <label className="block text-sm sm:text-base font-medium text-secondary-700 mb-2">Duration (hours)</label>
                   <select
                     {...register('duration', { required: 'Duration is required' })}
                     className="form-input-glass"
@@ -317,15 +317,15 @@ export default function NewBookingPage() {
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
           <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30">
-            <div className="p-6 border-b border-white/20">
-              <h2 className="text-xl font-semibold text-secondary-900 flex items-center">
-                <MapPinIcon className="h-6 w-6 mr-2 text-primary-600" />
+            <div className="p-4 sm:p-6 border-b border-white/20">
+              <h2 className="text-lg sm:text-xl font-semibold text-secondary-900 flex items-center">
+                <MapPinIcon className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-primary-600" />
                 Service Address
               </h2>
             </div>
-            <div className="p-6 space-y-4">
+            <div className="p-4 sm:p-6 space-y-4">
               <div>
-                <label className="block text-base font-medium text-secondary-700 mb-2">Address Line 1</label>
+                <label className="block text-sm sm:text-base font-medium text-secondary-700 mb-2">Address Line 1</label>
                 <input
                   {...register('address_line1', { required: 'Address is required' })}
                   type="text"
@@ -337,7 +337,7 @@ export default function NewBookingPage() {
               )}
             </div>
               <div>
-                <label className="block text-base font-medium text-secondary-700 mb-2">Address Line 2 (Optional)</label>
+                <label className="block text-sm sm:text-base font-medium text-secondary-700 mb-2">Address Line 2 (Optional)</label>
                 <input
                   {...register('address_line2')}
                   type="text"
@@ -347,7 +347,7 @@ export default function NewBookingPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-base font-medium text-secondary-700 mb-2">City</label>
+                  <label className="block text-sm sm:text-base font-medium text-secondary-700 mb-2">City</label>
                   <input
                     {...register('city', { required: 'City is required' })}
                     type="text"
@@ -359,7 +359,7 @@ export default function NewBookingPage() {
                 )}
               </div>
                 <div>
-                  <label className="block text-base font-medium text-secondary-700 mb-2">Postcode</label>
+                  <label className="block text-sm sm:text-base font-medium text-secondary-700 mb-2">Postcode</label>
                   <input
                     {...register('postcode', { 
                       required: 'Postcode is required',
@@ -385,10 +385,10 @@ export default function NewBookingPage() {
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
           <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30">
-            <div className="p-6 border-b border-white/20">
-              <h2 className="text-xl font-semibold text-secondary-900">Special Requirements (Optional)</h2>
+            <div className="p-4 sm:p-6 border-b border-white/20">
+              <h2 className="text-lg sm:text-xl font-semibold text-secondary-900">Special Requirements (Optional)</h2>
             </div>
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               {clientProfile?.special_requirements?.length > 0 && (
                 <div className="mb-4 p-3 bg-blue-500/10 backdrop-blur-sm border border-blue-400/30 rounded-xl">
                   <p className="text-sm text-blue-700 mb-2">From your profile preferences:</p>
@@ -410,7 +410,7 @@ export default function NewBookingPage() {
                       onChange={() => toggleRequirement(requirement)}
                       className="text-primary-600 focus:ring-primary-500 bg-white/10 border-white/20"
                     />
-                    <span className="text-base text-secondary-700">{requirement}</span>
+                    <span className="text-sm sm:text-base text-secondary-700">{requirement}</span>
                   </label>
                 ))}
               </div>
@@ -422,11 +422,12 @@ export default function NewBookingPage() {
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
           <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-secondary-900 flex items-center">
-                  <UserIcon className="h-6 w-6 mr-2 text-primary-600" />
-                  Choose Your Cleaner (Optional)
+            <div className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                <h2 className="text-lg sm:text-xl font-semibold text-secondary-900 flex items-center">
+                  <UserIcon className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-primary-600" />
+                  <span className="hidden sm:inline">Choose Your Cleaner (Optional)</span>
+                  <span className="sm:hidden">Choose Cleaner</span>
                 </h2>
                 <button
                   type="button"
@@ -612,18 +613,18 @@ export default function NewBookingPage() {
         )}
 
         {/* Submit */}
-        <div className="flex justify-end space-x-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
           <button
             type="button"
             onClick={() => router.back()}
-            className="px-6 py-3 bg-white/[0.08] hover:bg-white/[0.12] text-secondary-700 font-normal rounded-lg transition-all duration-200 border border-white/30 hover:border-white/40"
+            className="px-4 sm:px-6 py-2.5 sm:py-3 bg-white/[0.08] hover:bg-white/[0.12] text-secondary-700 text-sm sm:text-base font-normal rounded-lg transition-all duration-200 border border-white/30 hover:border-white/40 w-full sm:w-auto"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto text-sm sm:text-base"
           >
             {loading ? 'Creating Booking...' : 'Book Service'}
           </button>

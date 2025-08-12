@@ -27,7 +27,7 @@ Admin router had missing import for `require_admin_permission` and `AdminPermiss
 ### Failed Configuration
 ```bash
 # PROBLEMATIC - Caused pydantic parsing error
---set-env-vars GOOGLE_CLOUD_PROJECT=$PROJECT_ID,API_HOST=0.0.0.0,API_PORT=8000,SECRET_KEY=neatly-production-secret-key-super-secure-2025,ALLOWED_ORIGINS=https://caas-frontend-102964896009.europe-west2.run.app,ENVIRONMENT=production,DEPLOY_TIMESTAMP=$TIMESTAMP
+--set-env-vars GOOGLE_CLOUD_PROJECT=$PROJECT_ID,API_HOST=0.0.0.0,API_PORT=8000,SECRET_KEY=neatly-production-secret-key-super-secure-2025,ALLOWED_ORIGINS=https://caas-frontend-102964896009.us-central1.run.app,ENVIRONMENT=production,DEPLOY_TIMESTAMP=$TIMESTAMP
 ```
 
 ### Working Configuration  

@@ -235,7 +235,7 @@ class AuthHealthMonitor:
 
 def main():
     """Main entry point"""
-    base_url = os.getenv('CAAS_BASE_URL', 'https://caas-backend-102964896009.europe-west2.run.app')
+    base_url = os.getenv('CAAS_BASE_URL', 'https://caas-backend-102964896009.us-central1.run.app')
     check_interval = int(os.getenv('CHECK_INTERVAL', '60'))
     
     monitor = AuthHealthMonitor(base_url, check_interval)

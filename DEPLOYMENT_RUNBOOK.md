@@ -38,13 +38,13 @@ The verified deployment script automatically performs these checks:
 
 ```bash
 # Check system status
-curl https://caas-backend-102964896009.europe-west2.run.app/api/v1/system/info
+curl https://caas-backend-102964896009.us-central1.run.app/api/v1/system/info
 
 # Verify authentication components
-curl https://caas-backend-102964896009.europe-west2.run.app/api/v1/system/auth-test
+curl https://caas-backend-102964896009.us-central1.run.app/api/v1/system/auth-test
 
 # Check code integrity
-curl https://caas-backend-102964896009.europe-west2.run.app/api/v1/system/verify-code
+curl https://caas-backend-102964896009.us-central1.run.app/api/v1/system/verify-code
 ```
 
 ## Incident Response
@@ -61,28 +61,28 @@ curl https://caas-backend-102964896009.europe-west2.run.app/api/v1/system/verify
 1. **Force container restart:**
    ```bash
    gcloud run services update caas-backend \
-     --region=europe-west2 \
+     --region=us-central1 \
      --update-env-vars="CACHE_BUST=$(date +%s)"
    ```
 
 2. **Verify system status:**
    ```bash
-   curl https://caas-backend-102964896009.europe-west2.run.app/api/v1/system/auth-test
+   curl https://caas-backend-102964896009.us-central1.run.app/api/v1/system/auth-test
    ```
 
 3. **Check active revision:**
    ```bash
-   gcloud run revisions list --service=caas-backend --region=europe-west2 --limit=3
+   gcloud run revisions list --service=caas-backend --region=us-central1 --limit=3
    ```
 
 4. **If still failing, rollback:**
    ```bash
    # Get previous working revision
-   PREV_REV=$(gcloud run revisions list --service=caas-backend --region=europe-west2 --limit=2 --format="value(metadata.name)" | tail -1)
+   PREV_REV=$(gcloud run revisions list --service=caas-backend --region=us-central1 --limit=2 --format="value(metadata.name)" | tail -1)
    
    # Rollback
    gcloud run services update-traffic caas-backend \
-     --region=europe-west2 \
+     --region=us-central1 \
      --to-revisions="$PREV_REV=100"
    ```
 

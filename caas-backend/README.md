@@ -103,7 +103,7 @@ gcloud builds submit --config cloudbuild.yaml .
 gcloud run deploy caas-backend \
   --source . \
   --platform managed \
-  --region europe-west2 \
+  --region us-central1 \
   --allow-unauthenticated
 ```
 

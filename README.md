@@ -2,7 +2,7 @@
 
 A comprehensive web platform connecting cleaning contractors with clients in London, UK. Built with modern technologies and deployed on Google Cloud Run.
 
-**🚀 Live Production URL: https://caas-backend-102964896009.europe-west2.run.app**
+**🚀 Live Production URL: https://caas-backend-102964896009.us-central1.run.app**
 
 ## 📚 Documentation
 
@@ -37,7 +37,7 @@ neatly is a full-stack SaaS platform that enables:
 ┌─────────────────────────────────────────────────────────────┐
 │              CAAS Production Platform                       │
 ├─────────────────────────────────────────────────────────────┤
-│  Single Production URL: caas-frontend-102964896009.europe-west2.run.app │
+│  Single Production URL: caas-frontend-102964896009.us-central1.run.app │
 ├─────────────────────────────────────────────────────────────┤
 │  Frontend (Next.js 14)          │  Backend (FastAPI)        │
 │  ├── API Proxy (/api/* routes)  │  ├── Profile Management   │
@@ -369,21 +369,21 @@ For testing the platform, use these pre-created accounts:
 ### Admin User (Full Platform Access)
 - **Email**: `admin@neatly.com`
 - **Password**: `NeatlyAdmin123!`
-- **Dashboard**: [/admin](https://caas-frontend-102964896009.europe-west2.run.app/admin)
+- **Dashboard**: [/admin](https://caas-frontend-102964896009.us-central1.run.app/admin)
 - **Permissions**: User management, platform analytics, system configuration
 
 ### Client User (Customer Account)
 - **Email**: `client@neatly.com`
 - **Password**: `Client123!`
-- **Dashboard**: [/client](https://caas-frontend-102964896009.europe-west2.run.app/client)
+- **Dashboard**: [/client](https://caas-frontend-102964896009.us-central1.run.app/client)
 - **Features**: Book services, manage profile, view bookings, select cleaners
 
 ### Cleaner User (Service Provider)
 - **Email**: `cleaner@neatly.com`
 - **Password**: `Cleaner123!`
-- **Dashboard**: [/cleaner](https://caas-frontend-102964896009.europe-west2.run.app/cleaner)
+- **Dashboard**: [/cleaner](https://caas-frontend-102964896009.us-central1.run.app/cleaner)
 - **Features**: Accept jobs, manage availability, track earnings
 
-**Login URL**: https://caas-frontend-102964896009.europe-west2.run.app/auth/login
+**Login URL**: https://caas-frontend-102964896009.us-central1.run.app/auth/login
 
 > ⚠️ **Note**: These are test accounts for development and demonstration purposes. Do not use these credentials patterns in production environments.

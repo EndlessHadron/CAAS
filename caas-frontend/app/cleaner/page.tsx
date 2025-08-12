@@ -105,6 +105,18 @@ export default function CleanerDashboard() {
       loadCleanerData()
     } catch (error) {
       console.error('Failed to accept job:', error)
+      alert('Failed to accept job. Please try again.')
+    }
+  }
+
+  const handleRejectJob = async (jobId: string) => {
+    try {
+      await contractorsApi.rejectJob(jobId)
+      // Refresh data
+      loadCleanerData()
+    } catch (error) {
+      console.error('Failed to reject job:', error)
+      alert('Failed to reject job. Please try again.')
     }
   }
 
@@ -343,7 +355,10 @@ export default function CleanerDashboard() {
                               <CheckIcon className="h-4 w-4 mr-1" />
                               Accept
                             </button>
-                            <button className="flex items-center px-3 py-2 bg-white/50 backdrop-blur-sm text-gray-600 rounded hover:bg-white/70 text-sm border border-white/20">
+                            <button 
+                              onClick={() => handleRejectJob(job.booking_id)}
+                              className="flex items-center px-3 py-2 bg-white/50 backdrop-blur-sm text-gray-600 rounded hover:bg-white/70 text-sm border border-white/20"
+                            >
                               <XMarkIcon className="h-4 w-4 mr-1" />
                               Pass
                             </button>

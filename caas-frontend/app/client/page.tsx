@@ -135,23 +135,23 @@ export default function ClientDashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Header with glass effect */}
+      {/* Header with glass effect - Mobile optimized */}
       <div className="relative">
         <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500/10 to-accent-500/10 rounded-[2rem] blur-xl opacity-50"></div>
-        <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-[2rem] p-8 border border-white/30">
-          <div className="flex items-center justify-between">
+        <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-[2rem] p-4 sm:p-6 lg:p-8 border border-white/30">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
             <div>
-              <h1 className="text-3xl font-bold text-secondary-900 flex items-center">
-                <SparklesIcon className="h-8 w-8 mr-3 text-primary-600" />
+              <h1 className="text-2xl sm:text-3xl font-bold text-secondary-900 flex items-center">
+                <SparklesIcon className="h-6 w-6 sm:h-8 sm:w-8 mr-2 sm:mr-3 text-primary-600" />
                 Client Dashboard
               </h1>
-              <p className="text-secondary-600 mt-2 text-lg">
+              <p className="text-secondary-600 mt-2 text-base sm:text-lg">
                 Welcome back, {user.profile?.first_name}! Manage your <span className="bg-gradient-to-r from-primary-600 via-primary-500 to-accent-500 bg-clip-text text-transparent font-medium">neatly</span> services.
               </p>
             </div>
             <Link
               href="/bookings/new"
-              className="btn-primary flex items-center"
+              className="btn-primary flex items-center justify-center w-full sm:w-auto"
             >
               <PlusIcon className="h-5 w-5 mr-2" />
               Book Cleaning
@@ -160,19 +160,19 @@ export default function ClientDashboard() {
         </div>
       </div>
 
-      {/* Quick Stats with glass cards - removed Total Spent */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Quick Stats with glass cards - Mobile optimized */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Total Bookings */}
         <div className="relative group">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500/20 to-primary-600/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl p-6 border border-white/30 hover:border-white/40 transition-all duration-300">
+          <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-white/30 hover:border-white/40 transition-all duration-300">
             <div className="flex items-center">
-              <div className="p-3 bg-primary-500/20 backdrop-blur-sm rounded-xl">
-                <CalendarIcon className="h-6 w-6 text-primary-600" />
+              <div className="p-2 sm:p-3 bg-primary-500/20 backdrop-blur-sm rounded-xl">
+                <CalendarIcon className="h-5 w-5 sm:h-6 sm:w-6 text-primary-600" />
               </div>
-              <div className="ml-4">
-                <p className="text-base font-medium text-secondary-600">Total Bookings</p>
-                <p className="text-2xl font-bold text-secondary-900">{stats.totalBookings || 0}</p>
+              <div className="ml-3 sm:ml-4">
+                <p className="text-sm sm:text-base font-medium text-secondary-600">Total Bookings</p>
+                <p className="text-xl sm:text-2xl font-bold text-secondary-900">{stats.totalBookings || 0}</p>
               </div>
             </div>
           </div>
@@ -181,30 +181,30 @@ export default function ClientDashboard() {
         {/* Upcoming */}
         <div className="relative group">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl p-6 border border-white/30 hover:border-white/40 transition-all duration-300">
+          <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-white/30 hover:border-white/40 transition-all duration-300">
             <div className="flex items-center">
-              <div className="p-3 bg-yellow-500/20 backdrop-blur-sm rounded-xl">
-                <ClockIcon className="h-6 w-6 text-yellow-600" />
+              <div className="p-2 sm:p-3 bg-yellow-500/20 backdrop-blur-sm rounded-xl">
+                <ClockIcon className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" />
               </div>
-              <div className="ml-4">
-                <p className="text-base font-medium text-secondary-600">Upcoming</p>
-                <p className="text-2xl font-bold text-secondary-900">{stats.upcomingBookings || 0}</p>
+              <div className="ml-3 sm:ml-4">
+                <p className="text-sm sm:text-base font-medium text-secondary-600">Upcoming</p>
+                <p className="text-xl sm:text-2xl font-bold text-secondary-900">{stats.upcomingBookings || 0}</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Completed */}
-        <div className="relative group">
+        <div className="relative group sm:col-span-2 lg:col-span-1">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500/20 to-green-600/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl p-6 border border-white/30 hover:border-white/40 transition-all duration-300">
+          <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-white/30 hover:border-white/40 transition-all duration-300">
             <div className="flex items-center">
-              <div className="p-3 bg-green-500/20 backdrop-blur-sm rounded-xl">
-                <UserGroupIcon className="h-6 w-6 text-green-600" />
+              <div className="p-2 sm:p-3 bg-green-500/20 backdrop-blur-sm rounded-xl">
+                <UserGroupIcon className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
               </div>
-              <div className="ml-4">
-                <p className="text-base font-medium text-secondary-600">Completed</p>
-                <p className="text-2xl font-bold text-secondary-900">{stats.completedBookings || 0}</p>
+              <div className="ml-3 sm:ml-4">
+                <p className="text-sm sm:text-base font-medium text-secondary-600">Completed</p>
+                <p className="text-xl sm:text-2xl font-bold text-secondary-900">{stats.completedBookings || 0}</p>
               </div>
             </div>
           </div>
@@ -212,51 +212,51 @@ export default function ClientDashboard() {
 
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Main Content Grid - Mobile optimized */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         {/* Left Column - Bookings */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-4 lg:space-y-6">
           {/* Upcoming Bookings with glass effect */}
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
             <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30">
-              <div className="p-6 border-b border-white/20">
+              <div className="p-4 sm:p-6 border-b border-white/20">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold text-secondary-900">Upcoming Bookings</h2>
-                  <Link href="/bookings" className="text-primary-600 hover:text-primary-700 text-base font-medium transition-colors">
+                  <h2 className="text-lg sm:text-xl font-semibold text-secondary-900">Upcoming Bookings</h2>
+                  <Link href="/bookings" className="text-primary-600 hover:text-primary-700 text-sm sm:text-base font-medium transition-colors">
                     View All
                   </Link>
                 </div>
               </div>
               
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 {upcomingBookings.length > 0 ? (
                   <div className="space-y-4">
                     {upcomingBookings.map((booking) => (
                       <div
                         key={booking.booking_id}
-                        className="flex items-center justify-between p-4 bg-white/[0.06] backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/[0.08] transition-all duration-200"
+                        className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 bg-white/[0.06] backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/[0.08] transition-all duration-200 space-y-3 sm:space-y-0"
                       >
-                        <div className="flex items-center space-x-4">
-                          <div className="p-2 bg-primary-500/20 backdrop-blur-sm rounded-xl">
-                            <HomeIcon className="h-5 w-5 text-primary-600" />
+                        <div className="flex items-center space-x-3 sm:space-x-4">
+                          <div className="p-2 bg-primary-500/20 backdrop-blur-sm rounded-xl flex-shrink-0">
+                            <HomeIcon className="h-4 w-4 sm:h-5 sm:w-5 text-primary-600" />
                           </div>
-                          <div>
-                            <p className="font-medium text-secondary-900">{booking?.service?.type || 'Service'}</p>
-                            <p className="text-base text-secondary-600">
+                          <div className="min-w-0 flex-1">
+                            <p className="font-medium text-secondary-900 text-sm sm:text-base">{booking?.service?.type || 'Service'}</p>
+                            <p className="text-sm sm:text-base text-secondary-600">
                               {booking?.schedule?.date ? new Date(booking.schedule.date).toLocaleDateString() : 'Date TBD'}
                               {booking?.schedule?.time ? ` at ${booking.schedule.time}` : ''}
                             </p>
                             {booking?.location?.address && (
-                              <p className="text-sm text-secondary-500 flex items-center mt-1">
-                                <MapPinIcon className="h-3 w-3 mr-1" />
-                                {booking.location.address.line1}, {booking.location.address.city}
+                              <p className="text-xs sm:text-sm text-secondary-500 flex items-center mt-1">
+                                <MapPinIcon className="h-3 w-3 mr-1 flex-shrink-0" />
+                                <span className="truncate">{booking.location.address.line1}, {booking.location.address.city}</span>
                               </p>
                             )}
                           </div>
                         </div>
-                        <div className="text-right">
-                          <p className="font-semibold text-primary-600">£{booking?.service?.price || 0}</p>
+                        <div className="flex items-center justify-between sm:flex-col sm:items-end sm:text-right">
+                          <p className="font-semibold text-primary-600 text-sm sm:text-base">£{booking?.service?.price || 0}</p>
                           <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
                             booking?.status === 'confirmed' 
                               ? 'bg-green-100/60 text-green-800 border border-green-200/50'
@@ -285,25 +285,25 @@ export default function ClientDashboard() {
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
             <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30">
-              <div className="p-6 border-b border-white/20">
-                <h2 className="text-xl font-semibold text-secondary-900">Recent Activity</h2>
+              <div className="p-4 sm:p-6 border-b border-white/20">
+                <h2 className="text-lg sm:text-xl font-semibold text-secondary-900">Recent Activity</h2>
               </div>
               
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 {recentBookings.length > 0 ? (
                   <div className="space-y-4">
                     {recentBookings.map((booking) => (
                       <div
                         key={booking.booking_id}
-                        className="flex items-center justify-between p-4 bg-white/[0.06] backdrop-blur-sm border border-white/20 rounded-xl hover:bg-white/[0.08] transition-all duration-200"
+                        className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 bg-white/[0.06] backdrop-blur-sm border border-white/20 rounded-xl hover:bg-white/[0.08] transition-all duration-200 space-y-3 sm:space-y-0"
                       >
-                        <div>
-                          <p className="font-medium text-secondary-900">{booking?.service?.type || 'Service'}</p>
-                          <p className="text-base text-secondary-600">
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium text-secondary-900 text-sm sm:text-base">{booking?.service?.type || 'Service'}</p>
+                          <p className="text-sm sm:text-base text-secondary-600">
                             {booking?.schedule?.date ? new Date(booking.schedule.date).toLocaleDateString() : 'Date TBD'}
                           </p>
                           {booking?.cleaner?.name && (
-                            <p className="text-sm text-secondary-500">
+                            <p className="text-xs sm:text-sm text-secondary-500">
                               Cleaned by {booking.cleaner.name} 
                               {booking.cleaner.rating && (
                                 <span className="ml-1">⭐ {booking.cleaner.rating}</span>
@@ -311,8 +311,8 @@ export default function ClientDashboard() {
                             </p>
                           )}
                         </div>
-                        <div className="text-right">
-                          <p className="font-semibold text-secondary-900">£{booking?.service?.price || 0}</p>
+                        <div className="flex items-center justify-between sm:flex-col sm:items-end sm:text-right">
+                          <p className="font-semibold text-secondary-900 text-sm sm:text-base">£{booking?.service?.price || 0}</p>
                           <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
                             booking?.status === 'completed' 
                               ? 'bg-green-100/60 text-green-800 border border-green-200/50'
@@ -333,16 +333,16 @@ export default function ClientDashboard() {
         </div>
 
         {/* Right Column - Profile & Quick Actions */}
-        <div className="space-y-6">
+        <div className="space-y-4 lg:space-y-6">
           {/* Quick Actions with glass effect */}
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
             <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30">
-              <div className="p-6 border-b border-white/20">
-                <h2 className="text-lg font-semibold text-secondary-900">Quick Actions</h2>
+              <div className="p-4 sm:p-6 border-b border-white/20">
+                <h2 className="text-base sm:text-lg font-semibold text-secondary-900">Quick Actions</h2>
               </div>
               
-              <div className="p-6 space-y-3">
+              <div className="p-4 sm:p-6 space-y-3">
                 <Link
                   href="/bookings/new"
                   className="btn-primary w-full flex items-center justify-center"
@@ -374,11 +374,11 @@ export default function ClientDashboard() {
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
             <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30">
-              <div className="p-6 border-b border-white/20">
-                <h2 className="text-lg font-semibold text-secondary-900">Profile Summary</h2>
+              <div className="p-4 sm:p-6 border-b border-white/20">
+                <h2 className="text-base sm:text-lg font-semibold text-secondary-900">Profile Summary</h2>
               </div>
               
-              <div className="p-6 space-y-4">
+              <div className="p-4 sm:p-6 space-y-4">
                 {user.profile && (
                   <>
                     <div>

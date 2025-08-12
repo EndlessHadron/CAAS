@@ -348,7 +348,7 @@ app/
 
 ### Google Cloud Platform Setup
 - **Project ID**: `caas-467918`
-- **Region**: `europe-west2` (London)
+- **Region**: `us-central1` (London)
 - **Services Used**:
   - Cloud Run (serverless containers)
   - Firestore (database)
@@ -357,8 +357,8 @@ app/
   - IAM (permissions)
 
 ### Production URLs
-- **Backend API**: https://caas-backend-102964896009.europe-west2.run.app
-- **Frontend**: https://caas-frontend-102964896009.europe-west2.run.app
+- **Backend API**: https://caas-backend-102964896009.us-central1.run.app
+- **Frontend**: https://caas-frontend-102964896009.us-central1.run.app
 - **Single URL Access**: Users interact with frontend URL, API calls are proxied
 - **Current Revisions**:
   - Backend: `caas-backend-00072-x7n` (Production-safe with validation)
@@ -429,15 +429,15 @@ app/
 gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=caas-backend" --limit=50
 
 # Check service status
-curl https://caas-backend-102964896009.europe-west2.run.app/api/v1/system/info
+curl https://caas-backend-102964896009.us-central1.run.app/api/v1/system/info
 
 # Test authentication
-curl -X POST https://caas-backend-102964896009.europe-west2.run.app/api/v1/auth/login \
+curl -X POST https://caas-backend-102964896009.us-central1.run.app/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","password":"test123"}'
 
 # Check deployment status
-gcloud run services describe caas-backend --region=europe-west2
+gcloud run services describe caas-backend --region=us-central1
 ```
 
 ---
@@ -749,7 +749,7 @@ gcloud firestore export gs://caas-backup-bucket/$(date +%Y%m%d)
 gcloud logging read "resource.type=cloud_run_revision" --limit=100
 
 # Container management
-gcloud run services update caas-backend --region=europe-west2
+gcloud run services update caas-backend --region=us-central1
 ```
 
 ### Configuration Files

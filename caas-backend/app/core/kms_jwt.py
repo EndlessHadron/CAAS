@@ -195,8 +195,8 @@ def create_access_token(data: Dict[str, Any], expires_delta: Optional[timedelta]
         expire = datetime.utcnow() + timedelta(minutes=15)
     
     payload.update({
-        "exp": expire,
-        "iat": datetime.utcnow(),
+        "exp": int(expire.timestamp()),
+        "iat": int(datetime.utcnow().timestamp()),
         "type": "access"
     })
     
@@ -211,8 +211,8 @@ def create_refresh_token(data: Dict[str, Any]) -> str:
     expire = datetime.utcnow() + timedelta(days=7)
     
     payload.update({
-        "exp": expire,
-        "iat": datetime.utcnow(),
+        "exp": int(expire.timestamp()),
+        "iat": int(datetime.utcnow().timestamp()),
         "type": "refresh"
     })
     

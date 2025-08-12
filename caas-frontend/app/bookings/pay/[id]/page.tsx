@@ -62,40 +62,40 @@ export default function PaymentPage() {
   const amount = booking.service?.price || 50.00;
 
   return (
-    <div className="min-h-screen py-12 px-4">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="min-h-screen py-6 sm:py-12 px-4">
+      <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
         {/* Header */}
         <div className="relative">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500/10 to-accent-500/10 rounded-[2rem] blur-xl opacity-50"></div>
-          <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-[2rem] p-8 border border-white/30">
+          <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-[2rem] p-4 sm:p-6 lg:p-8 border border-white/30">
             <div className="flex items-center">
-              <SparklesIcon className="h-8 w-8 mr-3 text-primary-600" />
-              <h1 className="text-3xl font-bold text-secondary-900">
+              <SparklesIcon className="h-6 w-6 sm:h-8 sm:w-8 mr-2 sm:mr-3 text-primary-600" />
+              <h1 className="text-2xl sm:text-3xl font-bold text-secondary-900">
                 Complete Your Payment
               </h1>
             </div>
-            <p className="text-secondary-600 mt-2 text-lg">
+            <p className="text-secondary-600 mt-2 text-base sm:text-lg">
               Secure payment powered by <span className="font-semibold">Stripe</span>
             </p>
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
           {/* Booking Details */}
-          <div className="space-y-6">
+          <div className="space-y-4 lg:space-y-6">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
-              <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30 p-6">
-                <h3 className="text-xl font-semibold text-secondary-900 mb-4">Booking Details</h3>
+              <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30 p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-semibold text-secondary-900 mb-4">Booking Details</h3>
                 
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="flex items-center space-x-3">
-                    <div className="flex-shrink-0 w-10 h-10 bg-primary-500/10 rounded-lg flex items-center justify-center">
-                      <CalendarIcon className="h-5 w-5 text-primary-600" />
+                    <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-primary-500/10 rounded-lg flex items-center justify-center">
+                      <CalendarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-primary-600" />
                     </div>
-                    <div>
-                      <p className="text-sm text-secondary-500">Date</p>
-                      <p className="font-semibold text-secondary-900">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs sm:text-sm text-secondary-500">Date</p>
+                      <p className="font-semibold text-secondary-900 text-sm sm:text-base">
                         {new Date(booking.date).toLocaleDateString('en-GB', {
                           weekday: 'long',
                           year: 'numeric',
@@ -107,24 +107,24 @@ export default function PaymentPage() {
                   </div>
 
                   <div className="flex items-center space-x-3">
-                    <div className="flex-shrink-0 w-10 h-10 bg-accent-500/10 rounded-lg flex items-center justify-center">
-                      <ClockIcon className="h-5 w-5 text-accent-600" />
+                    <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-accent-500/10 rounded-lg flex items-center justify-center">
+                      <ClockIcon className="h-4 w-4 sm:h-5 sm:w-5 text-accent-600" />
                     </div>
-                    <div>
-                      <p className="text-sm text-secondary-500">Time & Duration</p>
-                      <p className="font-semibold text-secondary-900">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs sm:text-sm text-secondary-500">Time & Duration</p>
+                      <p className="font-semibold text-secondary-900 text-sm sm:text-base">
                         {booking.time} • {booking.service?.duration || 2} hours
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center space-x-3">
-                    <div className="flex-shrink-0 w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
-                      <MapPinIcon className="h-5 w-5 text-green-600" />
+                    <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+                      <MapPinIcon className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
                     </div>
-                    <div>
-                      <p className="text-sm text-secondary-500">Location</p>
-                      <p className="font-semibold text-secondary-900">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs sm:text-sm text-secondary-500">Location</p>
+                      <p className="font-semibold text-secondary-900 text-sm sm:text-base truncate">
                         {booking.location?.address?.line1 || 'Address on file'}
                       </p>
                     </div>
@@ -132,8 +132,8 @@ export default function PaymentPage() {
 
                   <div className="pt-4 border-t border-white/20">
                     <div className="flex justify-between items-center">
-                      <p className="text-lg font-medium text-secondary-900">Total Amount</p>
-                      <p className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
+                      <p className="text-base sm:text-lg font-medium text-secondary-900">Total Amount</p>
+                      <p className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
                         £{amount.toFixed(2)}
                       </p>
                     </div>
@@ -145,9 +145,9 @@ export default function PaymentPage() {
             {/* Service Details */}
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
-              <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30 p-6">
-                <h3 className="text-xl font-semibold text-secondary-900 mb-4">Service Type</h3>
-                <p className="text-lg font-medium text-secondary-800 capitalize">
+              <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30 p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-semibold text-secondary-900 mb-4">Service Type</h3>
+                <p className="text-base sm:text-lg font-medium text-secondary-800 capitalize">
                   {booking.service?.type?.replace(/_/g, ' ')} Cleaning
                 </p>
                 {booking.service?.special_requirements && booking.service.special_requirements.length > 0 && (
@@ -167,11 +167,11 @@ export default function PaymentPage() {
           </div>
 
           {/* Payment Form */}
-          <div className="space-y-6">
+          <div className="space-y-4 lg:space-y-6">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.07] to-transparent rounded-2xl"></div>
-              <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30 p-6">
-                <h3 className="text-xl font-semibold text-secondary-900 mb-6">Payment Method</h3>
+              <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/30 p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-semibold text-secondary-900 mb-4 sm:mb-6">Payment Method</h3>
                 <PaymentCard
                   bookingId={bookingId}
                   amount={amount}
@@ -180,7 +180,7 @@ export default function PaymentPage() {
               </div>
             </div>
 
-            <div className="text-center text-sm text-secondary-500">
+            <div className="text-center text-xs sm:text-sm text-secondary-500 px-2">
               <p>Your payment information is securely processed by Stripe.</p>
               <p className="mt-1">We never store your card details.</p>
             </div>

@@ -81,6 +81,46 @@ async def create_simple_booking(
         booking_ref = db.collection(FirestoreCollections.BOOKINGS).document(booking_id)
         booking_ref.set(booking_data)
         
+        # Send booking confirmation email
+        try:
+            # Get user details for email
+            user_ref = db.collection('users').document(current_user_id)
+            user_doc = user_ref.get()
+            
+            if user_doc.exists:
+                user = user_doc.to_dict()
+                from app.services.resend_email_service import email_service
+                import asyncio
+                
+                booking_details = {
+                    'booking_id': booking_id,
+                    'service_type': booking_request.service_type,
+                    'date': booking_request.date,
+                    'time': booking_request.time,
+                    'duration': booking_request.duration,
+                    'address': f"{booking_request.address.get('line1', '')}, {booking_request.address.get('city', '')} {booking_request.address.get('postal_code', '')}",
+                    'price': f"{total_price:.2f}",
+                    'cleaner_name': 'To be assigned'
+                }
+                
+                # Send email asynchronously
+                asyncio.create_task(
+                    email_service.send_booking_confirmation(
+                        user.get('email'),
+                        user.get('profile', {}).get('first_name', 'Customer'),
+                        booking_details
+                    )
+                )
+                
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.info(f"Booking confirmation email queued for: {user.get('email')}")
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Failed to send booking confirmation email: {e}")
+            # Don't fail booking creation if email fails
+        
         return {
             "booking_id": booking_id,
             "status": "pending",

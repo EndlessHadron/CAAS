@@ -83,7 +83,7 @@ docker push gcr.io/caas-467918/caas-backend:latest
 gcloud run deploy caas-backend \
   --image=gcr.io/caas-467918/caas-backend:latest \
   --platform=managed \
-  --region=europe-west2 \
+  --region=us-central1 \
   --allow-unauthenticated \
   --memory=1Gi \
   --cpu=1 \
@@ -99,7 +99,7 @@ gcloud run deploy caas-backend \
 cd caas-frontend
 
 # Get backend URL
-BACKEND_URL=$(gcloud run services describe caas-backend --region=europe-west2 --format="value(status.url)")
+BACKEND_URL=$(gcloud run services describe caas-backend --region=us-central1 --format="value(status.url)")
 
 # Build and push Docker image
 docker build -t gcr.io/caas-467918/caas-frontend:latest .
@@ -109,7 +109,7 @@ docker push gcr.io/caas-467918/caas-frontend:latest
 gcloud run deploy caas-frontend \
   --image=gcr.io/caas-467918/caas-frontend:latest \
   --platform=managed \
-  --region=europe-west2 \
+  --region=us-central1 \
   --allow-unauthenticated \
   --memory=512Mi \
   --cpu=1 \
@@ -141,7 +141,7 @@ gcloud run deploy caas-frontend \
 
 1. **Enable Firestore**
    ```bash
-   gcloud firestore databases create --region=europe-west2
+   gcloud firestore databases create --region=us-central1
    ```
 
 2. **Set up IAM permissions**
@@ -190,7 +190,7 @@ gcloud builds submit caas-frontend --config=caas-frontend/cloudbuild.yaml
 Update backend CORS settings to include your frontend URLs:
 ```bash
 gcloud run services update caas-backend \
-  --region=europe-west2 \
+  --region=us-central1 \
   --update-env-vars="ALLOWED_ORIGINS=https://your-frontend-url.com,http://localhost:3000"
 ```
 
@@ -257,12 +257,12 @@ curl https://your-frontend-url.com/api/health
 ### Rollback Deployment
 ```bash
 # List revisions
-gcloud run revisions list --service=caas-backend --region=europe-west2
+gcloud run revisions list --service=caas-backend --region=us-central1
 
 # Rollback to previous revision
 gcloud run services update-traffic caas-backend \
   --to-revisions=REVISION_NAME=100 \
-  --region=europe-west2
+  --region=us-central1
 ```
 
 ## 💰 Cost Optimization
@@ -311,10 +311,10 @@ Frontend:
 ### Debug Commands
 ```bash
 # Check service status
-gcloud run services describe caas-backend --region=europe-west2
+gcloud run services describe caas-backend --region=us-central1
 
 # View environment variables
-gcloud run services describe caas-backend --region=europe-west2 --format="export"
+gcloud run services describe caas-backend --region=us-central1 --format="export"
 
 # Test local Docker builds
 docker run -p 8000:8000 gcr.io/caas-467918/caas-backend:latest
@@ -357,11 +357,11 @@ Before going live:
 ./deploy-to-gcr.sh
 
 # Check status
-gcloud run services list --region=europe-west2
+gcloud run services list --region=us-central1
 
 # View logs
 gcloud logs tail "resource.type=cloud_run_revision"
 
 # Update service
-gcloud run services update [SERVICE_NAME] --region=europe-west2
+gcloud run services update [SERVICE_NAME] --region=us-central1
 ```

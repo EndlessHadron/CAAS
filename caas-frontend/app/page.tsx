@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { CheckCircleIcon, ClockIcon, StarIcon, SparklesIcon, ShieldCheckIcon, HeartIcon, CpuChipIcon, BoltIcon, MagnifyingGlassIcon, CalendarIcon, MapPinIcon, UserGroupIcon, TrophyIcon } from '@heroicons/react/24/outline'
+import { CheckCircleIcon, ClockIcon, StarIcon, SparklesIcon, ShieldCheckIcon, HeartIcon, CpuChipIcon, BoltIcon, MagnifyingGlassIcon, CalendarIcon, MapPinIcon, UserGroupIcon, TrophyIcon, ArrowRightIcon, HomeIcon } from '@heroicons/react/24/outline'
 
 export default function Home() {
   const [selectedService, setSelectedService] = useState('deep')
@@ -56,32 +56,7 @@ export default function Home() {
     },
   ]
 
-  const services = [
-    { 
-      name: 'Regular Cleaning', 
-      price: '£25/hour', 
-      description: 'Weekly or bi-weekly cleaning to keep your space spotless',
-      popular: false,
-    },
-    { 
-      name: 'Deep Cleaning', 
-      price: '£35/hour', 
-      description: 'Thorough one-time cleaning for that fresh start',
-      popular: true,
-    },
-    { 
-      name: 'Move In/Out', 
-      price: '£40/hour', 
-      description: 'Complete cleaning for moving transitions',
-      popular: false,
-    },
-    { 
-      name: 'One-Time Service', 
-      price: '£30/hour', 
-      description: 'Perfect for special occasions or events',
-      popular: false,
-    },
-  ]
+  // Services data removed - now using inline service cards in the Choose Your Service section
 
   return (
     <div className="space-y-16 md:space-y-24 relative overflow-hidden">
@@ -97,19 +72,20 @@ export default function Home() {
       </div>
 
       {/* Hero Section */}
-      <section className="py-1 md:py-2 animate-fade-in relative">
-        <div className="container-wide">
+      <section className="py-8 md:py-1 md:py-2 animate-fade-in relative">
+        <div className="container-wide px-4 md:px-6">
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
-            <div className="mb-8">
-              <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-200/40 rounded-full text-primary-700 text-base font-medium mb-8 shadow-sm backdrop-blur-sm">
-                <SparklesIcon className="h-5 w-5 mr-2 text-primary-600" />
-                AI-Powered Cleaning Service • London's Most Trusted
+            <div className="mb-6 md:mb-8">
+              <div className="inline-flex items-center px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-200/40 rounded-full text-primary-700 text-xs md:text-base font-medium mb-6 md:mb-8 shadow-sm backdrop-blur-sm">
+                <SparklesIcon className="h-4 md:h-5 w-4 md:w-5 mr-2 text-primary-600" />
+                <span className="hidden sm:inline">AI-Powered Cleaning Service • London's Most Trusted</span>
+                <span className="sm:hidden">AI-Powered • London's Best</span>
               </div>
             </div>
             
             {/* Main Headline */}
-            <h1 className="text-hero mb-8">
+            <h1 className="text-4xl sm:text-5xl md:text-hero mb-6 md:mb-8">
               <span className="block text-secondary-900">
                 Spotless Homes,
               </span>
@@ -119,47 +95,129 @@ export default function Home() {
             </h1>
             
             {/* Subtitle */}
-            <p className="text-subtitle mb-12 max-w-3xl mx-auto text-secondary-600">
+            <p className="text-base md:text-subtitle mb-8 md:mb-12 max-w-3xl mx-auto text-secondary-600 px-2 md:px-0">
               Our AI intelligently matches you with London's top-rated cleaning professionals based on your preferences, location, and needs. 
               From smart scheduling to automated quality checks, we use AI throughout the entire process to ensure perfect results, every time.
             </p>
 
             {/* Service Quality Stats */}
-            <div className="grid grid-cols-2 gap-12 mb-12 max-w-xl mx-auto">
+            <div className="grid grid-cols-2 gap-6 md:gap-12 mb-8 md:mb-12 max-w-xl mx-auto">
               <div className="text-center">
-                <div className="text-3xl font-light text-accent-600">4.9★</div>
-                <div className="text-sm text-secondary-500 font-light">Average Rating</div>
+                <div className="text-2xl md:text-3xl font-light text-accent-600">4.9★</div>
+                <div className="text-xs md:text-sm text-secondary-500 font-light">Average Rating</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-light text-success-600">500+</div>
-                <div className="text-sm text-secondary-500 font-light">Happy Customers</div>
+                <div className="text-2xl md:text-3xl font-light text-success-600">500+</div>
+                <div className="text-xs md:text-sm text-secondary-500 font-light">Happy Customers</div>
               </div>
             </div>
             
             {/* CTA Button */}
-            <div className="flex justify-center w-full">
-              <Link href="/auth/register" className="btn-primary text-lg px-12 py-4 font-medium">
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center w-full">
+              <Link href="/auth/register" className="btn-primary text-base md:text-lg px-8 md:px-12 py-3 md:py-4 font-medium">
                 Book Your Cleaner
+              </Link>
+              <Link href="/services/regular-cleaning" className="btn-secondary text-base md:text-lg px-8 md:px-12 py-3 md:py-4 font-medium">
+                View Services
               </Link>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Quick Service Selection - Glassmorphism */}
+      <section className="py-12 md:py-16 relative">
+        <div className="container-wide px-4 md:px-6">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary-900 mb-3 md:mb-4">
+              Choose Your Service
+            </h2>
+            <p className="text-base md:text-subtitle max-w-2xl mx-auto text-secondary-600 px-2 md:px-0">
+              Select the perfect cleaning solution for your needs
+            </p>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 max-w-5xl mx-auto">
+            {/* Regular Cleaning Card */}
+            <Link href="/services/regular-cleaning" className="relative group hover:scale-105 transition-transform duration-300">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500/10 to-accent-500/10 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl p-6 border border-white/30 hover:border-white/40 transition-all duration-300 h-full">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
+                    <CalendarIcon className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="text-xs font-medium px-3 py-1 bg-primary-100/60 text-primary-700 rounded-full">Most Popular</span>
+                </div>
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">Regular Cleaning</h3>
+                <p className="text-sm md:text-base text-gray-600 mb-4">Keep your home consistently spotless with scheduled weekly or bi-weekly visits</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xl md:text-2xl font-bold text-primary-600">From £25/hr</span>
+                  <ArrowRightIcon className="h-5 w-5 text-primary-500 transform group-hover:translate-x-1 transition-transform" />
+                </div>
+                </div>
+              </Link>
+            
+            {/* Deep Cleaning Card */}
+            <Link href="/services/deep-cleaning" className="relative group hover:scale-105 transition-transform duration-300">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-accent-500/10 to-primary-500/10 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl p-6 border border-white/30 hover:border-white/40 transition-all duration-300 h-full">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-accent-500 to-primary-500 rounded-xl flex items-center justify-center">
+                    <SparklesIcon className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="text-xs font-medium px-3 py-1 bg-accent-100/60 text-accent-700 rounded-full">Thorough Clean</span>
+                </div>
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">Deep Cleaning</h3>
+                <p className="text-sm md:text-base text-gray-600 mb-4">Comprehensive top-to-bottom cleaning that tackles every corner and surface</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xl md:text-2xl font-bold text-accent-600">From £35/hr</span>
+                  <ArrowRightIcon className="h-5 w-5 text-accent-500 transform group-hover:translate-x-1 transition-transform" />
+                </div>
+                </div>
+              </Link>
+            
+            {/* End of Tenancy Card */}
+            <Link href="/services/end-of-tenancy" className="relative group hover:scale-105 transition-transform duration-300">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500/10 to-primary-500/10 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative bg-white/[0.08] backdrop-blur-xl rounded-2xl p-6 border border-white/30 hover:border-white/40 transition-all duration-300 h-full">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-primary-500 rounded-xl flex items-center justify-center">
+                    <HomeIcon className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="text-xs font-medium px-3 py-1 bg-green-100/60 text-green-700 rounded-full">Move-Out Ready</span>
+                </div>
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">End of Tenancy</h3>
+                <p className="text-sm md:text-base text-gray-600 mb-4">Secure your deposit with our inventory-approved move-out cleaning service</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xl md:text-2xl font-bold text-green-600">From £40/hr</span>
+                  <ArrowRightIcon className="h-5 w-5 text-green-500 transform group-hover:translate-x-1 transition-transform" />
+                </div>
+                </div>
+              </Link>
+          </div>
+          
+          <div className="text-center mt-10">
+            <Link href="/bookings" className="inline-flex items-center bg-gradient-to-r from-primary-500 to-accent-500 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+              Book a Custom Service
+              <ArrowRightIcon className="h-5 w-5 ml-2" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Features Section */}
-      <section className="py-16">
-        <div className="container-wide">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mb-4">
+      <section className="py-12 md:py-16">
+        <div className="container-wide px-4 md:px-6">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary-900 mb-3 md:mb-4">
               Why Choose <span className="bg-gradient-to-r from-primary-600 via-primary-500 to-accent-500 bg-clip-text text-transparent">neatly</span>?
             </h2>
-            <p className="text-subtitle max-w-2xl mx-auto text-secondary-600">
+            <p className="text-base md:text-subtitle max-w-2xl mx-auto text-secondary-600 px-2 md:px-0">
               Professional cleaning made simple, reliable, and stress-free
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
             {features.map((feature, index) => (
               <div 
                 key={index} 
@@ -169,10 +227,10 @@ export default function Home() {
                 <div className={`w-16 h-16 ${feature.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   <feature.icon className={`h-8 w-8 ${feature.color}`} />
                 </div>
-                <h3 className="text-xl font-semibold text-secondary-900 mb-4">
+                <h3 className="text-lg md:text-xl font-semibold text-secondary-900 mb-3 md:mb-4">
                   {feature.title}
                 </h3>
-                <p className="text-body">
+                <p className="text-sm md:text-base text-body">
                   {feature.description}
                 </p>
               </div>
@@ -181,64 +239,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-16">
-        <div className="container-wide">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mb-4">
-              Our Services
-            </h2>
-            <p className="text-subtitle max-w-2xl mx-auto">
-              Professional cleaning solutions tailored to your needs
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, index) => (
-              <div 
-                key={index} 
-                className={`card-compact group relative overflow-hidden ${
-                  service.popular ? 'ring-2 ring-primary-300 shadow-soft-lg' : ''
-                }`}
-              >
-                {service.popular && (
-                  <div className="absolute top-0 right-0 bg-gradient-primary text-white text-xs font-medium px-3 py-1 rounded-bl-lg">
-                    Popular
-                  </div>
-                )}
-                
-                <div className="h-full flex flex-col">
-                  <h3 className="text-lg font-semibold text-secondary-900 mb-3">
-                    {service.name}
-                  </h3>
-                  <p className="text-2xl font-bold text-primary-600 mb-3">
-                    {service.price}
-                  </p>
-                  <p className="text-body flex-grow">
-                    {service.description}
-                  </p>
-                </div>
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-primary-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Testimonials Section */}
-      <section className="py-16 bg-secondary-50/50">
-        <div className="container-wide">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mb-4">
+      <section className="py-12 md:py-16 bg-secondary-50/50">
+        <div className="container-wide px-4 md:px-6">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary-900 mb-3 md:mb-4">
               What Our Customers Say
             </h2>
-            <p className="text-subtitle max-w-2xl mx-auto">
+            <p className="text-base md:text-subtitle max-w-2xl mx-auto px-2 md:px-0">
               Real stories from real customers across London
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
             {[
               {
                 name: "Sarah Johnson",
@@ -276,8 +289,8 @@ export default function Home() {
                       {testimonial.name.split(' ').slice(0, 2).map(n => n[0]).join('')}
                     </div>
                     <div>
-                      <h3 className="font-bold text-secondary-900 text-lg">{testimonial.name}</h3>
-                      <p className="text-sm font-medium text-accent-600">{testimonial.title}</p>
+                      <h3 className="font-bold text-secondary-900 text-base md:text-lg">{testimonial.name}</h3>
+                      <p className="text-xs md:text-sm font-medium text-accent-600">{testimonial.title}</p>
                       <p className="text-xs text-secondary-500 mt-1">{testimonial.location}</p>
                     </div>
                   </div>
@@ -291,7 +304,7 @@ export default function Home() {
                     </span>
                   </div>
                   
-                  <blockquote className="text-secondary-700 font-medium leading-relaxed">
+                  <blockquote className="text-sm md:text-base text-secondary-700 font-medium leading-relaxed">
                     "{testimonial.text}"
                   </blockquote>
                 </div>
@@ -302,9 +315,9 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16">
-        <div className="container-wide">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <section className="py-12 md:py-16">
+        <div className="container-wide px-4 md:px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center">
             {[
               { number: "500+", label: "Happy Customers", icon: HeartIcon },
               { number: "2,500+", label: "Cleans Completed", icon: CheckCircleIcon },
@@ -316,8 +329,8 @@ export default function Home() {
                   <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-accent-400 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                     <stat.icon className="h-8 w-8 text-white" />
                   </div>
-                  <div className="text-3xl font-bold text-secondary-900 mb-2">{stat.number}</div>
-                  <div className="text-secondary-600 font-medium">{stat.label}</div>
+                  <div className="text-2xl md:text-3xl font-bold text-secondary-900 mb-2">{stat.number}</div>
+                  <div className="text-sm md:text-base text-secondary-600 font-medium">{stat.label}</div>
                 </div>
               </div>
             ))}
@@ -326,27 +339,27 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16">
-        <div className="container-narrow">
+      <section className="py-12 md:py-16">
+        <div className="container-narrow px-4 md:px-6">
           <div className="card text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-primary-500 via-primary-600 to-accent-600 opacity-95"></div>
-            <div className="relative z-10 text-white py-8">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <div className="relative z-10 text-white py-6 md:py-8">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">
                 Ready to Experience Clean?
               </h2>
-              <p className="text-lg mb-8 opacity-90 max-w-xl mx-auto">
+              <p className="text-base md:text-lg mb-6 md:mb-8 opacity-90 max-w-xl mx-auto px-2 md:px-0">
                 Join hundreds of satisfied customers across London who trust neatly for their cleaning needs.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
                 <Link 
                   href="/auth/register" 
-                  className="bg-white text-primary-600 hover:bg-secondary-50 font-medium py-4 px-8 rounded-xl transition-all duration-200 shadow-soft hover:shadow-soft-lg hover:scale-105 active:scale-95"
+                  className="bg-white text-primary-600 hover:bg-secondary-50 font-medium py-3 md:py-4 px-6 md:px-8 rounded-xl text-sm md:text-base transition-all duration-200 shadow-soft hover:shadow-soft-lg hover:scale-105 active:scale-95"
                 >
                   Book Your First Clean
                 </Link>
                 <Link 
                   href="/auth/login" 
-                  className="text-white hover:text-primary-100 font-medium py-4 px-8 rounded-xl border border-white/20 hover:border-white/40 transition-all duration-200 hover:bg-white/10"
+                  className="text-white hover:text-primary-100 font-medium py-3 md:py-4 px-6 md:px-8 rounded-xl text-sm md:text-base border border-white/20 hover:border-white/40 transition-all duration-200 hover:bg-white/10"
                 >
                   Sign In
                 </Link>
